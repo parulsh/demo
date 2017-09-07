@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Create a new dish
+  </div>
+  <div class="panel-body">
+    <div class="container">
+
+      <%= form_for @food do |f| %>
+
+        <div class="row">
+
+          <div class="col-md-4 select">
+            <div class="form-group">
+              <label>Types of Cuisine</label>
+              <%= f.select :cuisine_type, [["Mexican", "Mexican"], ["Chinese", "Chinese"], ["Italian", "Italian"], ["Thai", "Thai"], ["Greek", "Greek"], ["Latin", "Latin"], ["Other", "Other"]],
+                            id: "cuisine_type", prompt: "Select...", class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="col-md-4 select">
+            <div class="form-group">
+              <label>Types of Dishes</label>
+              <%= f.select :entree_type, [["Soup", "Soup"], ["Salad", "Salad"], ["Main_course", "Main_course"], ["dessert", "dessert"]],
+                            id: "entree_type", prompt: "Select...", class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="col-md-4 select">
+            <div class="form-group">
+              <label>Portions Available</label>
+              <%= f.select :portion_number, [["1", 1], ["2", 2], ["3", 3], ["4+", 4]],
+                            id: "portions_available", prompt: "Select...", class: "form-control" %>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div><%= f.submit "Create My Dish", class: "btn btn-normal" %></div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>

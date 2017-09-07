@@ -1,0 +1,10 @@
+$('#photos').html("<%= j render 'photos_list' %>")
+<% if @food.photos.blank? %>
+  $('#photo_check').hide();
+<% end %>
+
+<% if !@food.active && !@food.price.blank? && !@food.listing_name.blank? && !@food.photos.blank? && !@food.address.blank? %>
+    $('#publish_button').attr('disabled', false);
+<% else %>
+    $('#publish_button').attr('disabled', true);
+<% end %>

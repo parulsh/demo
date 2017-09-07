@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cuisine_type: MyString
+  entree_type: MyString
+  portions_available: 1
+  listing_name: MyString
+  summary: MyText
+  address: MyString
+  organic: false
+  vegan: false
+  vegetarian: false
+  gluten_free: false
+
+two:
+  cuisine_type: MyString
+  entree_type: MyString
+  portions_available: 1
+  listing_name: MyString
+  summary: MyText
+  address: MyString
+  organic: false
+  vegan: false
+  vegetarian: false
+  gluten_free: false

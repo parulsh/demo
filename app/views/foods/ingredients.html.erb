@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-md-3">
+    <%= render 'food_menu' %>
+  </div>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+        Main Ingredients
+      </div>
+
+      <div class="panel-body">
+        <div class="container">
+          <%= form_for @food do |f| %>
+
+              <div class="row form-group">
+                <div class="col-md-4">
+                  <%= f.check_box :milk %> Milk
+                </div>
+                <div class="col-md-4">
+                  <%= f.check_box :eggs %> Eggs
+                </div>
+                <div class="col-md-4">
+                  <%= f.check_box :chicken %> Chicken
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col-md-4">
+                  <%= f.check_box :redmeat %> Red Meat
+                </div>
+                <div class="col-md-4">
+                  <%= f.check_box :fish %> Fish
+                </div>
+
+                  <div class="col-md-4">
+                    <%= f.check_box :other %> Other
+                  </div>
+                </div>
+              
+              <br/><br/>
+
+              <div class="text-center">
+                <%= f.submit "Save", class: "btn btn-form" %>
+              </div>
+
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

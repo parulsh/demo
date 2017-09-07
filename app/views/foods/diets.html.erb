@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-3">
+    <%= render 'food_menu' %>
+  </div>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+        Type of Diet
+      </div>
+
+      <div class="panel-body">
+        <div class="container">
+          <%= form_for @food do |f| %>
+
+              <div class="row form-group">
+                <div class="col-md-4">
+                  <%= f.check_box :organic %> Organic
+                </div>
+                <div class="col-md-4">
+                  <%= f.check_box :vegan %> Vegan
+                </div>
+                <div class="col-md-4">
+                  <%= f.check_box :vegetarian %> Vegetarian
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col-md-4">
+                  <%= f.check_box :gluten_free %> Gluten Free
+                </div>
+
+                  <div class="col-md-4">
+                    <%= f.check_box :other_diets %> Other
+                  </div>
+
+              </div>
+              <br/><br/>
+
+              <div class="text-center">
+                <%= f.submit "Save", class: "btn btn-form" %>
+              </div>
+
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

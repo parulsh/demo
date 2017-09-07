@@ -1,0 +1,90 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span><i class="fa fa-bolt" style="color: #ffb400"></i> $<%= @food.price %></span>
+    <span class="pull-right">Per Portion</span>
+  </div>
+  <div class="panel-body">
+    <%= form_for([@food, @food.orders.new]) do |f| %>
+      <div class="block">
+        <div class="col-12 col-md-12">
+          <label>Order Date and Time </label>
+              <div class='input-group date' id='datetimepicker5'>
+                <%= f.text_field :start_date, class: "form-control datepicker"  %>
+                <span class="input-group-addon">
+                  <a href="#">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                  </a>
+                </span>
+              </div>
+              <br>
+          </div>
+
+
+
+
+
+
+
+          <div class="col-md-12 select">
+
+            <div class="form-group">
+
+              <label>How many Servings Would you like?</label>
+              <%= f.select :portion_number, [["1", 1], ["2", 2], ["3", 3], ["4+", 4]],
+                            id: "portion_number", prompt: "Select...", class: "form-control" %>
+              <% link_to "preview", "#", id: "preview-link" %>
+
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+
+
+<section id="preview-section">
+    <h4 class="message-alert text-center"><span id="message"></span></h4>
+      <div id="preview" style="display: true">
+        <table class="order-table">
+          <tbody>
+            <tr>
+              <td>Price</td>
+              <td class="text-right">$<%= @food.price %></td>
+            </tr>
+            <tr>
+              <td>Portion(s)</td>
+              <td class="text-right">x <span id="order_servings"></span></td>
+            </tr>
+            <tr>
+              <td class="total">Total</td>
+              <td class="text-right">$<span id="order_total"></span></td>
+            </tr>
+
+        </tbody>
+       </table>
+      </div>
+    </section>
+
+
+
+      <%= f.submit "Order Now", id: "btn_book", class: "btn btn-normal btn-block", disabled: false %>
+    <% end %>
+  </div>
+</div>
+
+<script type="text/javascript">
+            $(function () {
+                $('#datetimepicker5').datetimepicker({
+                    defaultDate: "11/1/2013",
+                    disabledDates: [
+                        moment("12/25/2013"),
+                        new Date(2013, 11 - 1, 21),
+                        "11/22/2013 00:53"
+                    ]
+                });
+            });
+        </script>
+    </div>
+</div>
