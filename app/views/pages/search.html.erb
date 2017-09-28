@@ -100,7 +100,7 @@
 
 
         <div class="row">
-          <% @arrfoods.each do |food| %>
+          <% @arrFoods.each do |food| %>
               <div class="col-md-4">
                 <div class="panel panel-deafult">
                   <div class="panel-heading preview">
@@ -116,9 +116,7 @@
 
 
 
-      <div class="row" id="room_listing">
-        <%= render partial: "foods/foods_list", locals: {rooms: @arrFoods} %>
-      </div>
+
 
     </div>
   </div>
