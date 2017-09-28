@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906022328) do
+ActiveRecord::Schema.define(version: 20170914043715) do
 
   create_table "foods", force: :cascade do |t|
     t.string   "cuisine_type"
@@ -67,6 +67,22 @@ ActiveRecord::Schema.define(version: 20170906022328) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.index ["food_id"], name: "index_photos_on_food_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.text     "comment"
+    t.integer  "star",       default: 1
+    t.integer  "food_id"
+    t.integer  "order_id"
+    t.integer  "chef_id"
+    t.integer  "foodie_id"
+    t.string   "type"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["chef_id"], name: "index_reviews_on_chef_id"
+    t.index ["food_id"], name: "index_reviews_on_food_id"
+    t.index ["foodie_id"], name: "index_reviews_on_foodie_id"
+    t.index ["order_id"], name: "index_reviews_on_order_id"
   end
 
   create_table "users", force: :cascade do |t|

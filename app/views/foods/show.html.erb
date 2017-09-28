@@ -164,6 +164,21 @@
 
     <!-- REVIEWS -->
 
+    <div class="row">
+     <div class="col-md-12">
+       <h3>
+         <%= pluralize(@foodie_reviews.count, "Review") %>
+         <span id="average_rating"></span>
+       </h3>
+       <div class="container">
+         <div><%= render "reviews/foodie_list" %></div>
+       </div>
+     </div>
+   </div>
+   <br/>
+   <hr/>
+
+
 
     <!-- GOOGLE MAP -->
     <div class="row">
@@ -223,7 +238,15 @@
 
     <!-- RIGHT PANEL -->
       <div class="col-md-4">
-
+  <!-- order form -->
         <%= render 'orders/form' %>
       </div>
    </div>
+
+   <script>
+     $('#average_rating').raty({
+       path: '/assets',
+       readOnly: true,
+       score: <%= @food.average_rating %>
+     });
+   </script>

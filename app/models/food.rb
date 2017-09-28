@@ -1,7 +1,9 @@
 class Food < ApplicationRecord
   belongs_to :user
   has_many :photos
-  has_many :orders 
+  has_many :orders
+
+  has_many :foodie_reviews
 
   geocoded_by :address
   after_validation :geocode, if: :address_changed?
@@ -16,6 +18,10 @@ class Food < ApplicationRecord
     else
       "blank.jpg"
     end
+  end
+
+  def average_rating
+    foodie_reviews.count == 0 ? 0 : foodie_reviews.average(:star).round(2).to_i
   end
 
 end

@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-md-3">
+    <ul class="sidebar-list">
+      <li class="sidebar-item"><%= link_to "Your Listings", foods_path, class: "sidebar-link" %></li>
+      <li class="sidebar-item"><%= link_to "Your Orders", your_orders_path, class: "sidebar-link" %></li>
+      <li class="sidebar-item"><%= link_to "Your Meals", your_meals_path, class: "sidebar-link active" %></li>
+    </ul>
+  </div>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Your Meals
+      </div>
+      <div class="panel-body">
+
+        <% @meals.each do |meal| %>
+        <div class="row">
+
+            <div class="col-md-2">
+              <%= link_to food_path(meal.food) do %>
+                <%= image_tag meal.food.cover_photo(:thumb) %>
+              <% end %>
+            </div>
+            <div class="col-md-5">
+              <%= link_to meal.food.listing_name, food_path(meal.food) %><br/><br/>
+              <span >
+                <%= image_tag avatar_url(meal.food.user), class: "img-circle avatar-medium" %>
+                <%= link_to user_path(meal.food.user) do %>
+                    <%= meal.food.user.fullname %>
+                <% end %>
+              </span>
+            </div>
+            
+            <div class="col-md-3 text-right">
+              <%= render partial: "reviews/foodie_form", locals: {order: meal} %>
+            </div>
+
+
+          </div>
+          <hr/>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  </div>

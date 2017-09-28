@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  comment: MyText
+  star: 1
+  food: one
+  order: one
+  chef: one
+  foodie: one
+  type: 
+
+two:
+  comment: MyText
+  star: 1
+  food: two
+  order: two
+  chef: two
+  foodie: two
+  type: 

@@ -6,16 +6,56 @@
     <div class="panel panel-default">
       <div class="panel-heading">Verification</div>
       <div class="panel-body">
-        Email Address<br/>
-        Phone Number
-      </div>
+        <ul class="sidebar-list">
+          <% if @user.confirmation_token %>
+            <li>Email Address<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+          <% end %>
+          <% if @user.provider %>
+            <li>Facebook<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+          <% end %>
+          <li>Phone Number<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+        </ul>
       </div>
     </div>
+  </div>
 
-    <div class="col-md-9">
-      <h2><%= @user.fullname %></h2>
-      <div class="description row-space-3">
-        <%= @user.description %>
-      </div>
-      </div>
-    </div>   
+  <div class="col-md-9">
+    <h2><%= @user.fullname %></h2>
+
+    <div class="description row-space-3">
+      <%= @user.description %>
+    </div>
+
+    <h4>Listings (<%= @foods.length %>)</h4><br/>
+
+    <div class="row">
+      <% @foods.each do |food| %>
+          <div class="col-md-4">
+            <div class="panel panel-deafult">
+              <div class="panel-heading preview">
+                <%= image_tag food.cover_photo(:medium) %>
+              </div>
+              <div class="panel-body">
+                <%= link_to food.listing_name, food %>
+              </div>
+            </div>
+         </div>
+          <% end %>
+    </div>
+
+    <br/>
+
+       <h4>Reviews From Foodies (<%= @foodie_reviews.count %>)</h4>
+       <div class="row">
+         <%= render "reviews/foodie_list" %>
+       </div>
+       <br/>
+
+       <h4>Reviews From Chefs (<%= @chef_reviews.count %>)</h4>
+       <div class="row">
+         <%= render "reviews/chef_list" %>
+       </div>
+
+
+  </div>
+</div>

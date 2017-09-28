@@ -31,9 +31,14 @@ Rails.application.routes.draw do
 
   end
 
+  resources :foodie_reviews, only: [:create, :destroy]
+  resources :chef_reviews, only: [:create, :destroy]
 
 
+  get '/your_meals' => 'orders#your_meals'
+  get '/your_orders' => 'orders#your_orders'
 
+  get 'search' => 'pages#search'
 
 
 end

@@ -10,6 +10,9 @@ class User < ApplicationRecord
          has_many :foods
          has_many :orders
 
+         has_many :foodie_reviews, class_name: "FoodieReview", foreign_key: "foodie_id"
+         has_many :chef_reviews, class_name: "ChefReview", foreign_key: "chef_id"
+
          def self.from_omniauth(auth)
            user = User.where(email: auth.info.email).first
 

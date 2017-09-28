@@ -27,8 +27,13 @@ class OrdersController < ApplicationController
 
   end
 
+  def your_meals
+    @meals = current_user.orders.order(start_date: :asc)
+  end
+
   def your_orders
     @foods = current_user.foods
+
   end
 
   private

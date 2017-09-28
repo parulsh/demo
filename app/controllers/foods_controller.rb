@@ -22,6 +22,7 @@ class FoodsController < ApplicationController
 
   def show
     @photos = @food.photos
+    @foodie_reviews = @food.foodie_reviews
   end
 
   def listing
