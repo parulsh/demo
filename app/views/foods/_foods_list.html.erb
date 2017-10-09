@@ -1,0 +1,24 @@
+<% foods.each do |food| %>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading preview">
+          <%= image_tag food.cover_photo(:medium) %>
+        </div>
+        <div class="panel-body">
+          <%= link_to food.listing_name, food %><br/>
+          $<%= food.price %> - <%= food.cuisine_type %> - <%= pluralize(food.portions_available, "Portion") %>
+          <div id="star_<%= food.id %>"></div> <%= pluralize(food.foodie_reviews.count, "review") %>
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+         $('#star_<%= food.id %>').raty({
+           path: '/assets',
+           readOnly: true,
+           score: <%= food.average_rating %>
+         });
+       </script>
+
+<% end %>

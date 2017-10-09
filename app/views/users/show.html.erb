@@ -29,18 +29,9 @@
     <h4>Listings (<%= @foods.length %>)</h4><br/>
 
     <div class="row">
-      <% @foods.each do |food| %>
-          <div class="col-md-4">
-            <div class="panel panel-deafult">
-              <div class="panel-heading preview">
-                <%= image_tag food.cover_photo(:medium) %>
-              </div>
-              <div class="panel-body">
-                <%= link_to food.listing_name, food %>
-              </div>
-            </div>
-         </div>
-          <% end %>
+
+        <%= render partial: "foods/foods_list", locals: {foods: @foods} %>
+
     </div>
 
     <br/>

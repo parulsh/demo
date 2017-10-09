@@ -13,7 +13,7 @@ class PagesController < ApplicationController
 
     # STEP 2
     if session[:loc_search] && session[:loc_search] != ""
-      @foods_address = Food.where(active: true).near(session[:loc_search], 5, order: 'distance')
+      @foods_address = Food.where(active: true).near(session[:loc_search], 20, order: 'distance')
     else
       @foods_address = Food.where(active: true).all
     end
@@ -24,7 +24,7 @@ class PagesController < ApplicationController
 
     @arrFoods = @foods.to_a
 
-    # STEP 4
+  
 
 
 
