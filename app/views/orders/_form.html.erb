@@ -1,90 +1,157 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <span><i class="fa fa-bolt" style="color: #ffb400"></i> $<%= @food.price %></span>
+    <span><% if @food.Instant? %> <i class="fa fa-bolt" style="color: #ffb400"></i> <% end %> $<%= @food.price %></span>
     <span class="pull-right">Per Portion</span>
   </div>
   <div class="panel-body">
     <%= form_for([@food, @food.orders.new]) do |f| %>
-      <div class="block">
-        <div class="col-12 col-md-12">
-          <label>Order Date and Time </label>
-              <div class='input-group date' id='datetimepicker5'>
-                <%= f.text_field :start_date, class: "form-control datepicker"  %>
-                <span class="input-group-addon">
-                  <a href="#">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                  </a>
-                </span>
-              </div>
-              <br>
-          </div>
 
 
 
+    <div class="row">
+        <div class="col-md-6">
+          <label>Food in </label>
+          <%= f.text_field :start_date, readonly: true, placeholder: "Start Date", class: "form-control datepicker" %>
+        </div>
+        <div class="col-md-6">
+          <label>Food out</label>
+          <%= f.text_field :end_date, readonly: true, placeholder: "End Date", class: "form-control datepicker" %>
+        </div>
+      </div>
+
+    <br/>
 
 
+      <div class="col-md-12 select">
 
+        <div class="form-group">
 
-          <div class="col-md-12 select">
-
-            <div class="form-group">
-
-              <label>How many Servings Would you like?</label>
-              <%= f.select :portion_number, [["1", 1], ["2", 2], ["3", 3], ["4+", 4]],
-                            id: "portion_number", prompt: "Select...", class: "form-control" %>
-              <% link_to "preview", "#", id: "preview-link" %>
-
-            </div>
-          </div>
+          <label>How many Servings Would you like?</label>
+          <%= f.select :portion_number, [["1", 1], ["2", 2], ["3", 3], ["4+", 4]],
+                        id: "portion_number", prompt: "Select...", class: "form-control" %>
+          <% link_to "preview", "#", id: "preview-link" %>
 
         </div>
+      </div>
+
+    </div>
 
 
 
-
-
-
-<section id="preview-section">
-    <h4 class="message-alert text-center"><span id="message"></span></h4>
-      <div id="preview" style="display: true">
-        <table class="order-table">
+      <h4 class="message-alert text-center"><span id="message"></span></h4>
+      <div id="preview" style="display: none">
+        <table class="reservation-table">
           <tbody>
             <tr>
               <td>Price</td>
               <td class="text-right">$<%= @food.price %></td>
             </tr>
             <tr>
-              <td>Portion(s)</td>
-              <td class="text-right">x <span id="order_servings"></span></td>
+              <td>Order Day(s)</td>
+              <td class="text-right">x <span id="order_days"></span></td>
             </tr>
             <tr>
               <td class="total">Total</td>
               <td class="text-right">$<span id="order_total"></span></td>
             </tr>
-
-        </tbody>
-       </table>
+          </tbody>
+        </table>
       </div>
-    </section>
+
+      <br/>
 
 
 
-      <%= f.submit "Order Now", id: "btn_book", class: "btn btn-normal btn-block", disabled: false %>
-    <% end %>
-  </div>
-</div>
 
-<script type="text/javascript">
-            $(function () {
-                $('#datetimepicker5').datetimepicker({
-                    defaultDate: "11/1/2013",
-                    disabledDates: [
-                        moment("12/25/2013"),
-                        new Date(2013, 11 - 1, 21),
-                        "11/22/2013 00:53"
-                    ]
-                });
-            });
-        </script>
-    </div>
-</div>
+
+
+
+
+
+
+
+
+          <section id="preview-section">
+              <h4 class="message-alert text-center"><span id="message"></span></h4>
+                <div id="preview" style="display: true">
+                  <table class="order-table">
+                    <tbody>
+                      <tr>
+                        <td>Price</td>
+                        <td class="text-right">$<%= @food.price %></td>
+                      </tr>
+                      <tr>
+                        <td>Portion(s)</td>
+                        <td class="text-right">x <span id="order_servings"></span></td>
+                      </tr>
+                      <tr>
+                        <td class="total">Total</td>
+                        <td class="text-right">$<span id="order_total"></span></td>
+                      </tr>
+
+                  </tbody>
+                 </table>
+                </div>
+              </section>
+
+
+
+              <% if @food.Instant? %>
+                 <%= f.submit "Book Now", id: "btn_book", class: "btn btn-normal btn-block", disabled: true %>
+             <% else %>
+                 <%= f.submit "Request Now", id: "btn_book", class: "btn btn-normal btn-block", disabled: true %>
+             <% end %>
+           <% end %>
+         </div>
+       </div>
+
+
+  <script>
+  <html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Spinner - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="/resources/demos/external/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script>
+  $( function() {
+    var spinner = $( "#spinner" ).spinner();
+
+    $( "#disable" ).on( "click", function() {
+      if ( spinner.spinner( "option", "disabled" ) ) {
+        spinner.spinner( "enable" );
+      } else {
+        spinner.spinner( "disable" );
+      }
+    });
+    $( "#destroy" ).on( "click", function() {
+      if ( spinner.spinner( "instance" ) ) {
+        spinner.spinner( "destroy" );
+      } else {
+        spinner.spinner();
+      }
+    });
+    $( "#getvalue" ).on( "click", function() {
+      alert( spinner.spinner( "value" ) );
+    });
+    $( "#setvalue" ).on( "click", function() {
+      spinner.spinner( "value", 5 );
+    });
+
+    $( "button" ).button();
+  } );
+  </script>
+</head>
+<body>
+
+<p>
+  <label for="spinner">Select a value:</label>
+  <input id="spinner" name="value">
+</p>
+</body>
+</html>
+  </script>

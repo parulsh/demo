@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914043715) do
+ActiveRecord::Schema.define(version: 20171025035500) do
 
   create_table "foods", force: :cascade do |t|
     t.string   "cuisine_type"
@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 20170914043715) do
     t.boolean  "vegan"
     t.boolean  "vegetarian"
     t.boolean  "gluten_free"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.integer  "user_id"
     t.integer  "price"
     t.boolean  "milk"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20170914043715) do
     t.boolean  "active"
     t.float    "latitude"
     t.float    "longitude"
+    t.integer  "instant",            default: 1
     t.index ["user_id"], name: "index_foods_on_user_id"
   end
 
@@ -50,10 +51,11 @@ ActiveRecord::Schema.define(version: 20170914043715) do
     t.datetime "end_date"
     t.integer  "price"
     t.integer  "total"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.time     "time_pickup"
     t.integer  "portion_number"
+    t.integer  "status",         default: 0
     t.index ["food_id"], name: "index_orders_on_food_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
@@ -107,6 +109,8 @@ ActiveRecord::Schema.define(version: 20170914043715) do
     t.string   "image"
     t.string   "phone_number"
     t.text     "description"
+    t.string   "pin"
+    t.boolean  "phone_verified"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

@@ -23,6 +23,9 @@
                 </div>
               </div>
 
+
+
+
               <div class="col-md-4 select">
                 <div class="form-group">
                   <label>Types of Dishes</label>
@@ -30,6 +33,15 @@
                                 id: "entree_type", prompt: "Select...", class: "form-control" %>
                 </div>
               </div>
+
+
+              <div class="col-md-4 select">
+                <div class="form-group">
+                  <label>Order Type</label>
+                  <%= f.select :instant, Food.instants.map {|key,value| [key.humanize, key]}, selected: 'Instant', prompt: "Select...", class: "form-control"  %>
+                </div>
+              </div>
+
 
               <div class="col-md-4 select">
                 <div class="form-group">

@@ -4,21 +4,32 @@ class OrdersController < ApplicationController
   def create
     food = Food.find(params[:food_id])
 
-  #  if current_user == food.user
-  #    flash[:alert] = "You cannot order your own food!"
-  #  else
-
-    #  start_date = Date.parse(order_params[:start_date])
-
+    if current_user == food.user
+        flash[:alert] = "You cannot book your own property!"
+      else
+        start_date = Date.parse(order_params[:start_date])
+        end_date = Date.parse(order_params[:end_date])
+        days = (end_date - start_date).to_i + 1
 
 
       @order = current_user.orders.build(order_params)
       @order.food = food
       @order.price = food.price
-      @order.total = food.price * @order.portion_number
-      @order.save
+      @order.total = food.price * days
+       #@order.save
 
-      flash[:notice] = "Your order has been placed!"
+      if @order.save
+        if food.Request?
+          flash[:notice] = "Request sent succesfully"
+        else
+          @order.Approved!
+          flash[:notice] = "Your order was created succesfully"
+        end
+      else
+        flash[:alert] = "Cannot complete your order"
+      end
+
+    end
 
       redirect_to food
   end
@@ -38,6 +49,6 @@ class OrdersController < ApplicationController
 
   private
     def order_params
-      params.require(:order).permit(:start_date, :user_id, :food_id, :portion_number)
+      params.require(:order).permit(:start_date, :end_date)
     end
 end

@@ -1,54 +1,45 @@
 <div class="row">
   <div class="col-md-3">
     <div class="center">
-      <%= image_tag avatar_url(@user), class: "avatar-full" %>
+      <%= image_tag avatar_url(current_user), class: "avatar-full" %>
     </div>
     <div class="panel panel-default">
-      <div class="panel-heading">Verification</div>
+      <div class="panel-heading"><%= current_user.fullname %></div>
       <div class="panel-body">
         <ul class="sidebar-list">
-          <% if @user.confirmation_token %>
+          <% if current_user.confirmation_token %>
             <li>Email Address<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
           <% end %>
-          <% if @user.provider %>
+          <% if current_user.provider %>
             <li>Facebook<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
           <% end %>
           <% if current_user.phone_verified %>
             <li>Phone Number<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
           <% end %>
+
         </ul>
       </div>
     </div>
   </div>
 
   <div class="col-md-9">
-    <h2><%= @user.fullname %></h2>
 
-    <div class="description row-space-3">
-      <%= @user.description %>
+    <!-- Notification -->
+    <div class="panel panel-default">
+      <div class="panel-heading">Notifications</div>
+      <div class="panel-body">
+
+
+      </div>
     </div>
 
-    <h4>Listings (<%= @foods.length %>)</h4><br/>
-
-    <div class="row">
-
+    <!-- Your Listings -->
+    <div class="panel panel-default">
+      <div class="panel-heading">Your Listings (<%= @foods.length %>)</div>
+      <div class="panel-body">
         <%= render partial: "foods/foods_list", locals: {foods: @foods} %>
-
+      </div>
     </div>
-
-    <br/>
-
-       <h4>Reviews From Foodies (<%= @foodie_reviews.count %>)</h4>
-       <div class="row">
-         <%= render "reviews/foodie_list" %>
-       </div>
-       <br/>
-
-       <h4>Reviews From Chefs (<%= @chef_reviews.count %>)</h4>
-       <div class="row">
-         <%= render "reviews/chef_list" %>
-       </div>
-
 
   </div>
 </div>

@@ -107,7 +107,7 @@ class FoodsController < ApplicationController
 
    def food_params
      params.require(:food).permit(:cuisine_type, :entree_type, :portions_available, :listing_name, :summary, :address, :price,
-      :organic, :vegan, :vegetarian, :gluten_free, :other_diets, :milk, :eggs, :chicken, :redmeat, :fish, :other, :active)
+      :organic, :vegan, :vegetarian, :gluten_free, :other_diets, :milk, :eggs, :chicken, :redmeat, :fish, :other, :active, :instant)
 
   end
 end
