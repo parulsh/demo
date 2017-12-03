@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 20171025035500) do
     t.integer  "total"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.time     "time_pickup"
+
     t.integer  "portion_number"
     t.integer  "status",         default: 0
     t.index ["food_id"], name: "index_orders_on_food_id"

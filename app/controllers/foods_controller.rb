@@ -66,31 +66,30 @@ class FoodsController < ApplicationController
 
   def preload
 
-    orders = @food.orders.where("portion_number" <= @foods.portions_available)
+    today = Date.today
+    orders = @food.orders.where("start_date >= ? OR end_date >= ?", today, today)
 
     render json: orders
 
   end
 
   def preview
+    start_date = Date.parse(params[:start_date])
+    end_date = Date.parse(params[:end_date])
 
-    #start_date = Date.parse(params)[:start_date]
+    output = {
+      conflict: is_conflict(start_date, end_date, @food)
+    }
 
-  #  output = {
-  #    conflict: is_conflict(portions_available, @food)
-  #  }
-
-  #  render json: output
-
+    render json: output
   end
 
-
   private
+    def is_conflict(start_date, end_date, food)
+      check = food.orders.where("? < start_date AND end_date < ?", start_date, end_date)
+      check.size > 0? true : false
+    end
 
-    #def is_conflict(portions_available, food)
-    #  check = food.orders.where("? > portions_available", portions_available)
-    #  check.size > portions_available ? true : false
-    #end
 
 
    def set_food

@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     end
     resources :photos, only: [:create, :destroy]
     resources :orders, only: [:create]
-      get 'portion_number'
+
 
   end
 
@@ -52,5 +52,15 @@ Rails.application.routes.draw do
   #------ Second level tutorial -----
 
   get 'dashboard' => 'dashboards#index'
+
+  resources :orders, only: [:approve, :decline] do
+    member do
+      post '/approve' => "orders#approve"
+      post '/decline' => "orders#decline"
+
+    end
+  end
+
+  get '/host_calendar' => 'calendars#host'
 
 end

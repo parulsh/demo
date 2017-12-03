@@ -1,46 +1,24 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <span><% if @food.Instant? %> <i class="fa fa-bolt" style="color: #ffb400"></i> <% end %> $<%= @food.price %></span>
-    <span class="pull-right">Per Portion</span>
+    <span><i class="fa fa-bolt" style="color: #ffb400"></i> $<%= @food.price %></span>
+    <span class="pull-right">Per Order</span>
   </div>
   <div class="panel-body">
     <%= form_for([@food, @food.orders.new]) do |f| %>
-
-
-
-    <div class="row">
+      <div class="row">
         <div class="col-md-6">
-          <label>Food in </label>
+          <label>First Order</label>
           <%= f.text_field :start_date, readonly: true, placeholder: "Start Date", class: "form-control datepicker" %>
         </div>
         <div class="col-md-6">
-          <label>Food out</label>
-          <%= f.text_field :end_date, readonly: true, placeholder: "End Date", class: "form-control datepicker" %>
+          <label>Last Order</label>
+          <%= f.text_field :end_date, readonly: true, placeholder: "End Date", class: "form-control datepicker", disabled: true %>
         </div>
       </div>
-
-    <br/>
-
-
-      <div class="col-md-12 select">
-
-        <div class="form-group">
-
-          <label>How many Servings Would you like?</label>
-          <%= f.select :portion_number, [["1", 1], ["2", 2], ["3", 3], ["4+", 4]],
-                        id: "portion_number", prompt: "Select...", class: "form-control" %>
-          <% link_to "preview", "#", id: "preview-link" %>
-
-        </div>
-      </div>
-
-    </div>
-
-
 
       <h4 class="message-alert text-center"><span id="message"></span></h4>
       <div id="preview" style="display: none">
-        <table class="reservation-table">
+        <table class="order-table">
           <tbody>
             <tr>
               <td>Price</td>
@@ -60,98 +38,118 @@
 
       <br/>
 
+      <%= f.submit "Order Now", id: "btn_book", class: "btn btn-normal btn-block", disabled: true %>
+    <% end %>
+  </div>
+</div>
 
+<script>
 
+  function checkDate(date) {
+    dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    return [$.inArray(dmy, unavailableDates) == -1];
+  }
 
+  $(function() {
 
+    unavailableDates = [];
 
+    $.ajax({
+      url: '<%= preload_food_path(@food) %>',
+      dateTyp: 'json',
+      success: function(data) {
 
+        $.each(data, function(arrID, arrValue) {
+            for(var d = new Date(arrValue.start_date); d <= new Date(arrValue.end_date); d.setDate(d.getDate() + 1)) {
+              unavailableDates.push($.datepicker.formatDate('d-m-yy', d));
+            }
+        });
 
+        $('#order_start_date').datepicker({
+          dateFormat: 'mm-dd-yy',
+          minDate: 0,
+          maxDate: '3m',
+          beforeShowDay: checkDate,
+          onSelect: function(selected) {
+            $('#order_end_date').datepicker("option", "minDate", selected);
+            $('#order_end_date').attr("disabled", false);
 
+            var start_date = $('#order_start_date').datepicker('getDate');
+            var end_date = $('#order_end_date').datepicker('getDate');
+            var days = (end_date - start_date)/1000/60/60/24 + 1;
 
+            var input = {
+              'start_date': start_date,
+              'end_date': end_date
+            }
 
+            $.ajax({
+              url: '<%= preview_food_path(@food) %>',
+              data: input,
+              success: function(data) {
 
-          <section id="preview-section">
-              <h4 class="message-alert text-center"><span id="message"></span></h4>
-                <div id="preview" style="display: true">
-                  <table class="order-table">
-                    <tbody>
-                      <tr>
-                        <td>Price</td>
-                        <td class="text-right">$<%= @food.price %></td>
-                      </tr>
-                      <tr>
-                        <td>Portion(s)</td>
-                        <td class="text-right">x <span id="order_servings"></span></td>
-                      </tr>
-                      <tr>
-                        <td class="total">Total</td>
-                        <td class="text-right">$<span id="order_total"></span></td>
-                      </tr>
+                if(data.conflict) {
+                  $('#message').text("You need to order at least one meal");
+                  $('#preview').hide();
+                  $('#btn_book').attr('disabled', true);
+                } else {
+                  $('#message').text("");
+                  $('#preview').show();
+                  $('#btn_book').attr('disabled', false);
 
-                  </tbody>
-                 </table>
-                </div>
-              </section>
+                  var total = days * <%= @food.price %>
+                  $('#order_days').text(days);
+                  $('#order_total').text(total);
+                }
+              }
+            });
 
+          }
+        });
 
+        $('#order_end_date').datepicker({
+          dateFormat: 'mm-dd-yy',
+          minDate: 0,
+          maxDate: '3m',
+          beforeShowDay: checkDate,
+          onSelect: function(selected) {
+            $('#order_start_date').datepicker("option", "maxDate", selected);
 
-              <% if @food.Instant? %>
-                 <%= f.submit "Book Now", id: "btn_book", class: "btn btn-normal btn-block", disabled: true %>
-             <% else %>
-                 <%= f.submit "Request Now", id: "btn_book", class: "btn btn-normal btn-block", disabled: true %>
-             <% end %>
-           <% end %>
-         </div>
-       </div>
+            var start_date = $('#order_start_date').datepicker('getDate');
+            var end_date = $('#order_end_date').datepicker('getDate');
+            var days = (end_date - start_date)/1000/60/60/24 + 1;
 
+            var input = {
+              'start_date': start_date,
+              'end_date': end_date
+            }
 
-  <script>
-  <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>jQuery UI Spinner - Default functionality</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script src="/resources/demos/external/jquery-mousewheel/jquery.mousewheel.js"></script>
-  <script>
-  $( function() {
-    var spinner = $( "#spinner" ).spinner();
+            $.ajax({
+              url: '<%= preview_food_path(@food) %>',
+              data: input,
+              success: function(data) {
 
-    $( "#disable" ).on( "click", function() {
-      if ( spinner.spinner( "option", "disabled" ) ) {
-        spinner.spinner( "enable" );
-      } else {
-        spinner.spinner( "disable" );
+                if(data.conflict) {
+                  $('#message').text("These dates are not available.");
+                  $('#preview').hide();
+                  $('#btn_book').attr('disabled', true);
+                } else {
+                  $('#message').text("");
+                  $('#preview').show();
+                  $('#btn_book').attr('disabled', false);
+
+                  var total = days * <%= @food.price %>
+                  $('#order_days').text(Order days);
+                  $('#order_total').text(total);
+                }
+              }
+            });
+          }
+        });
       }
     });
-    $( "#destroy" ).on( "click", function() {
-      if ( spinner.spinner( "instance" ) ) {
-        spinner.spinner( "destroy" );
-      } else {
-        spinner.spinner();
-      }
-    });
-    $( "#getvalue" ).on( "click", function() {
-      alert( spinner.spinner( "value" ) );
-    });
-    $( "#setvalue" ).on( "click", function() {
-      spinner.spinner( "value", 5 );
-    });
 
-    $( "button" ).button();
-  } );
-  </script>
-</head>
-<body>
 
-<p>
-  <label for="spinner">Select a value:</label>
-  <input id="spinner" name="value">
-</p>
-</body>
-</html>
-  </script>
+
+  });
+</script>

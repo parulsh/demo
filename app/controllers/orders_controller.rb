@@ -1,11 +1,12 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_order, only: [:approve, :decline]
 
   def create
     food = Food.find(params[:food_id])
 
     if current_user == food.user
-        flash[:alert] = "You cannot book your own property!"
+        flash[:alert] = "You cannot order your own food :("
       else
         start_date = Date.parse(order_params[:start_date])
         end_date = Date.parse(order_params[:end_date])
@@ -16,7 +17,7 @@ class OrdersController < ApplicationController
       @order.food = food
       @order.price = food.price
       @order.total = food.price * days
-       #@order.save
+      @order.save
 
       if @order.save
         if food.Request?
@@ -47,7 +48,23 @@ class OrdersController < ApplicationController
 
   end
 
+  def approve
+      @order.Approved!
+    redirect_to your_orders_path
+  end
+
+  def decline
+    @order.Declined!
+    redirect_to your_orders_path
+  end
+
+
   private
+
+    def set_order
+        @order = Order.find(params[:id])
+      end
+
     def order_params
       params.require(:order).permit(:start_date, :end_date)
     end
