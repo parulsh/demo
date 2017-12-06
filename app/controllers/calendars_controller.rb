@@ -2,7 +2,27 @@ class CalendarsController < ApplicationController
   before_action :authenticate_user!
   include ApplicationHelper
 
+  def create
+    date_from = Date.parse(calendar_params[:start_date])
+    date_to = Date.parse(calendar_params[:end_date])
 
+    (date_from..date_to).each do |date|
+      calendar = Calendar.where(food_id: params[:food_id], day: date)
+
+      if calendar.present?
+        calendar.update_all(price: calendar_params[:price], status: calendar_params[:status])
+      else
+        Calendar.create(
+          food_id: params[:food_id],
+          day: date,
+          price: calendar_params[:price],
+          status: calendar_params[:status]
+        )
+      end
+    end
+
+    redirect_to host_calendar_path
+  end
 
   def host
     @foods = current_user.foods
@@ -12,10 +32,10 @@ class CalendarsController < ApplicationController
 
     if params[:q].present?
       params[:start_date] = params[:q][:start_date]
-      params[:food_id] = params[:q][:food_id]
+      params[:foods_id] = params[:q][:food_id]
     end
 
-    
+    @search = Order.ransack(params[:q])
 
     if params[:food_id]
       @food = Food.find(params[:food_id])
@@ -27,13 +47,17 @@ class CalendarsController < ApplicationController
       @events = @food.orders.joins(:user)
                       .select('orders.*, users.fullname, users.image, users.email, users.uid')
                       .where('(start_date BETWEEN ? AND ?) AND status <> ?', first_of_month, end_of_month, 2)
-
+      @events.each{ |e| e.image = avatar_url(e) }
+    #  @days = Calendar.where("food_id = ? AND day BETWEEN ? AND ?", params[:food_id], first_of_month, end_of_month)
     else
       @food = nil
       @events = []
-
+      @days = []
     end
   end
 
-
+  private
+    def calendar_params
+      params.require(:calendar).permit([:price, :status, :start_date, :end_date])
+    end
 end
