@@ -16,13 +16,14 @@
   </div>
 <% end %>
 
+<%= render 'form' %>
 
 
 <div id="calendar"></div>
 
 <script>
   window.orders = <%= raw @events.to_json %>
-  window.days = <%= raw @days.to_json %>
+
   console.log(orders);
 
   function showOrders(data) {
@@ -58,8 +59,52 @@
           </div>
         </a>
       `);
-     }
-  });
+    },
+    dayRender: function(date, cell) {
+
+
+      <% if !@foods.blank? %>
+
+        cell.append('<span class="day-price">' + '$<%= @food.price %>' + '</span>')
+
+      <% end %>
+    },
+    selectable: true,
+    select: function(start, end, jsEvent, view) {
+      var start_date = moment(start);
+      var end_date = moment(end).subtract(1, "days");
+
+      <% if @foods.blank? %>
+                $('#calendar').fullCalendar('unselect');
+            <% end %>
+
+            var overlap = orders.filter(function(e) {
+              var r_start_date = moment(e.start_date);
+              var r_end_date = moment(e.end_date).subtract(1, "days");
+
+              return (r_start_date.isSameOrBefore(end_date) && r_end_date.isSameOrAfter(start_date))
+            }).length > 0;
+
+            if(start.isBefore(moment()) || overlap) {
+              $('#calendar').fullCalendar('unselect')
+            } else {
+              $('#new_calendar').modal('show');
+
+              $('#calendar_start_date').datepicker({
+                dateFormat: "yy-mm-dd",
+                setDate: start_date
+              });
+              $('#calendar_start_date').val(start_date.format("YYYY-MM-DD"));
+
+              $('#calendar_end_date').datepicker({
+                dateFormat: "yy-mm-dd",
+                setDate: end_date
+              });
+              $('#calendar_end_date').val(end_date.format("YYYY-MM-DD"));
+            }
+          }
+        });
+
 
   $('.fc-prev-button').click(function() {
     var current = new Date($('#start-date').val());

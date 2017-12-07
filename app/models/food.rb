@@ -7,6 +7,7 @@ class Food < ApplicationRecord
   has_many :orders
 
   has_many :foodie_reviews
+  has_many :calendars 
 
   geocoded_by :address
   after_validation :geocode, if: :address_changed?

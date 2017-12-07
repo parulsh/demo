@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     end
     resources :photos, only: [:create, :destroy]
     resources :orders, only: [:create]
+    resources :calendars 
 
 
   end

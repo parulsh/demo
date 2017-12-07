@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  day: 2017-12-06
+  price: 1
+  status: 1
+  food: one
+
+two:
+  day: 2017-12-06
+  price: 1
+  status: 1
+  food: two
