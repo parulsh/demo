@@ -47,6 +47,9 @@ Rails.application.routes.draw do
   get '/your_meals' => 'orders#your_meals'
   get '/your_orders' => 'orders#your_orders'
 
+  post '/cart' => 'orders#cart'
+
+  get '/my_cart' => 'orders#my_cart'
   get 'search' => 'pages#search'
 
 

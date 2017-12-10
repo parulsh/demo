@@ -18,4 +18,5 @@
 //= require toastr
 //= require moment
 //= require fullcalendar 
+//= require bootstrap-datepicker
 //= require_tree .

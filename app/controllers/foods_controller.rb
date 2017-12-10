@@ -23,6 +23,8 @@ class FoodsController < ApplicationController
   def show
     @photos = @food.photos
     @foodie_reviews = @food.foodie_reviews
+    @order = Order.new
+    session[:cart_obj] = []
   end
 
   def listing

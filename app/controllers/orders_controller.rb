@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:cart, :my_cart]
   before_action :set_order, only: [:approve, :decline]
 
   def create
@@ -33,6 +33,57 @@ class OrdersController < ApplicationController
     end
 
       redirect_to food
+  end
+
+  def cart 
+    session[:cart_obj] = Array.new if !session[:cart_obj] 
+
+    logger.info session[:cart_obj].inspect
+    logger.info params[:food_id].inspect
+
+    if params[:food_id].present?
+      food = Food.find params[:food_id].to_i
+
+      position = nil
+      quantity = 1  
+
+      start_date = Date.strptime(params[:order][:start_date], '%m/%d/%Y')
+      end_date = Date.strptime(params[:order][:end_date], '%m/%d/%Y')
+
+      days = end_date.mjd - start_date.mjd
+
+      total_quantity = (params[:quantity].to_i * days.to_i) if params[:quantity] && params[:quantity].to_i > 0
+      day_qty = params[:quantity].to_i
+ 
+
+      if food 
+        if session[:cart_obj].size > 0  
+          session[:cart_obj].each_with_index do |d, index|
+            if d[:id] == food.id
+              position = index   
+            end
+          end  
+          unless position.nil?  
+            session[:cart_obj][position][:total_quantity] = session[:cart_obj][position][:total_quantity].to_i + total_quantity
+   
+            session[:cart_obj][position][:day_qty] = day_qty.to_i
+            session[:cart_obj][position][:price] = (product.price.to_f/100 * qty) 
+            session[:cart_obj][position][:unit_price] = product.price.to_f/100 
+          else 
+            h = { :name =>food.listing_name, :start_date => start_date, :end_date=> end_date, :food_id=>params[:food_id].to_i, :unit_price=>food.price.to_f, :total_quantity => total_quantity, :per_day_qty=> day_qty, :price=> food.price.to_f * total_quantity.to_i }                
+            session[:cart_obj] << h 
+          end 
+        else
+          h = {:name => food.listing_name, :start_date => start_date, :end_date=> end_date, :food_id => params[:food_id].to_i, :unit_price=>food.price.to_f, :total_quantity => total_quantity, :per_day_qty=> day_qty, :price=> food.price.to_f * total_quantity.to_i }                
+          session[:cart_obj] << h 
+        end 
+      end 
+    end
+  end
+
+  def my_cart
+    logger.info session[:cart_obj].inspect
+    
   end
 
   def portion_number
