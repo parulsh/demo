@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, except: [:cart, :my_cart]
+  before_action :authenticate_user!, except: [:cart, :my_cart, :remove_product_from_session]
   before_action :set_order, only: [:approve, :decline]
 
   def create
@@ -36,10 +36,7 @@ class OrdersController < ApplicationController
   end
 
   def cart 
-    session[:cart_obj] = Array.new if !session[:cart_obj] 
-
-    logger.info session[:cart_obj].inspect
-    logger.info params[:food_id].inspect
+    session[:cart_obj] = Array.new if !session[:cart_obj]  
 
     if params[:food_id].present?
       food = Food.find params[:food_id].to_i
@@ -50,7 +47,14 @@ class OrdersController < ApplicationController
       start_date = Date.strptime(params[:order][:start_date], '%m/%d/%Y')
       end_date = Date.strptime(params[:order][:end_date], '%m/%d/%Y')
 
-      days = end_date.mjd - start_date.mjd
+      days = 1
+      if (end_date.to_date != start_date.to_date) 
+        days = (end_date.mjd - start_date.mjd) + 1
+      end 
+
+      logger.info start_date.to_date.inspect
+      logger.info end_date.to_date.inspect 
+      logger.info days.inspect
 
       total_quantity = (params[:quantity].to_i * days.to_i) if params[:quantity] && params[:quantity].to_i > 0
       day_qty = params[:quantity].to_i
@@ -64,26 +68,44 @@ class OrdersController < ApplicationController
             end
           end  
           unless position.nil?  
-            session[:cart_obj][position][:total_quantity] = session[:cart_obj][position][:total_quantity].to_i + total_quantity
-   
-            session[:cart_obj][position][:day_qty] = day_qty.to_i
-            session[:cart_obj][position][:price] = (product.price.to_f/100 * qty) 
-            session[:cart_obj][position][:unit_price] = product.price.to_f/100 
+            session[:cart_obj][position]["total_quantity"] = session[:cart_obj][position][:total_quantity].to_i + total_quantity
+            session[:cart_obj][position]["day_qty"] = day_qty.to_i
+            session[:cart_obj][position]["price"] = (product.price.to_f/100 * qty) 
+            session[:cart_obj][position]["unit_price"] = product.price.to_f/100 
           else 
-            h = { :name =>food.listing_name, :start_date => start_date, :end_date=> end_date, :food_id=>params[:food_id].to_i, :unit_price=>food.price.to_f, :total_quantity => total_quantity, :per_day_qty=> day_qty, :price=> food.price.to_f * total_quantity.to_i }                
+            h = { "name" =>food.listing_name, "start_date" => start_date, "end_date"=> end_date, "food_id"=>params[:food_id].to_i, "unit_price"=>food.price.to_f, "total_quantity" => total_quantity, "per_day_qty"=> day_qty, "price"=> food.price.to_f * total_quantity.to_i }                
+ 
+
             session[:cart_obj] << h 
           end 
         else
-          h = {:name => food.listing_name, :start_date => start_date, :end_date=> end_date, :food_id => params[:food_id].to_i, :unit_price=>food.price.to_f, :total_quantity => total_quantity, :per_day_qty=> day_qty, :price=> food.price.to_f * total_quantity.to_i }                
+          h = { "name" => food.listing_name, "start_date" => start_date, "end_date" => end_date, "food_id" => params[:food_id].to_i, "unit_price" =>food.price.to_f, "total_quantity" => total_quantity, "per_day_qty" => day_qty, "price"=> food.price.to_f * total_quantity.to_i }                
+ 
           session[:cart_obj] << h 
         end 
       end 
-    end
+    end  
+
   end
 
-  def my_cart
-    logger.info session[:cart_obj].inspect
-    
+  def my_cart 
+  end
+
+  def remove_product_from_session 
+    if session[:cart_obj].size > 0   
+      index = 0
+      session[:cart_obj].each_with_index do |s, i| 
+        if s["name"] == params["name"]
+          index = i
+        end
+      end 
+
+      session[:cart_obj].each do |del|
+          session[:cart_obj].delete_at(index)
+      end 
+    end 
+    flash[:notice] = params[:name].to_s+' was removed from your shopping cart.!' 
+    redirect_to my_cart_path 
   end
 
   def portion_number

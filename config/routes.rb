@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     end
     resources :photos, only: [:create, :destroy]
     resources :orders, only: [:create]
-    resources :calendars 
+    resources :calendars
 
 
   end
@@ -48,6 +48,8 @@ Rails.application.routes.draw do
   get '/your_orders' => 'orders#your_orders'
 
   post '/cart' => 'orders#cart'
+
+  get '/remove_product_from_session' => 'orders#remove_product_from_session'
 
   get '/my_cart' => 'orders#my_cart'
   get 'search' => 'pages#search'
@@ -66,5 +68,7 @@ Rails.application.routes.draw do
   end
 
   get '/host_calendar' => 'calendars#host'
+  get '/payment_method' => "users#payment"
+  post '/add_card' => "users#add_card"
 
 end

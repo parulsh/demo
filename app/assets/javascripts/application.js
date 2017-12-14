@@ -18,5 +18,16 @@
 //= require toastr
 //= require moment
 //= require fullcalendar 
+//= require card
 //= require bootstrap-datepicker
 //= require_tree .
+
+
+function onRemoveProduct(name)
+{
+		var r = confirm("are you sure want to remove " + name +" from cart?");
+	if(r==true)
+	{
+ 		window.location.href = "/remove_product_from_session?name="+name;
+    }
+}

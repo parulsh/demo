@@ -15,7 +15,7 @@
         </div>
         <div class="col-md-6">
           <label>Last Order</label>
-          <%= f.text_field :end_date, readonly: true, placeholder: "End Date", class: "form-control datepicker", disabled: true %>
+          <%= f.text_field :end_date, readonly: true, placeholder: "End Date", class: "form-control datepicker"%>
         </div>
       </div>
       <div class="row">
@@ -23,7 +23,7 @@
           <label>Quantity(Per Day)</label>      
         </div>
         <div class="col-md-5" style="margin-top:15px"> 
-          <%= number_field_tag :quantity, '', placeholder: "Quantity", class: "form-control"%>
+          <%= number_field_tag :quantity, '', placeholder: "Quantity", min: 0, class: "form-control"%>
         </div>
       </div>
 
@@ -57,7 +57,7 @@
 <script type="text/javascript">
   $(document).ready(function(){ 
     var date = new Date();
-    date.setDate(date.getDate()-1);
+    date.setDate(date.getDate());
 
     $('#order_start_date').datepicker({
     "format": "mm/dd/yyyy", 
@@ -66,12 +66,18 @@
     "autoclose": true
     });   
 
+    $('#order_end_date').datepicker({
+    "format": "mm/dd/yyyy", 
+    "weekStart": 1, 
+    "startDate" : date,
+    "autoclose": true
+    }); 
+    $('#order_end_date').attr('disabled', true);   
+
     $('#order_start_date').datepicker().on('changeDate', function (ev) { 
       $('#order_end_date').attr('disabled', false);   
 
-      var date = new Date(ev.date);
-      console.log(date)
-
+      var date = new Date(ev.date); 
       $('#order_end_date').datepicker({
       "format": "mm/dd/yyyy", 
       "weekStart": 1, 
@@ -82,17 +88,23 @@
     });
 
     $('#order_end_date').datepicker().on('changeDate', function (ev) {    
-      var date = new Date(ev.date);
-      console.log(date) 
+      var date = new Date(ev.date); 
       $('#order_start_date').datepicker({
       "format": "mm/dd/yyyy", 
       "weekStart": 1, 
       "startDate" : date,
       "autoclose": true
       });  
-      console.log($("#order_start_date").val())
-      console.log($("#order_end_date").val())
-      console.log($("#quantity").val())
+      
+
+      var startDt=document.getElementById("order_start_date").value;
+      var endDt=document.getElementById("order_end_date").value;
+
+      if( (new Date(startDt).getTime() > new Date(endDt).getTime()))
+      {
+          $("#order_start_date").datepicker("update", new Date);
+      }
+
       enableOrderNow() 
     });
 
@@ -103,7 +115,6 @@
 
   function enableOrderNow()
   {
-    console.log("inside")
       if($("#order_start_date").val() && $("#order_end_date").val() && $("#quantity").val())
       {
         $('#btn_book').attr('disabled', false);   
@@ -115,3 +126,5 @@
   }
 
 </script>
+
+

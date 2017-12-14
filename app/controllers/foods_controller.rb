@@ -24,6 +24,7 @@ class FoodsController < ApplicationController
     @photos = @food.photos
     @foodie_reviews = @food.foodie_reviews
     @order = Order.new 
+    
   end
 
   def listing

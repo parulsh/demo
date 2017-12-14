@@ -48,7 +48,7 @@ class CalendarsController < ApplicationController
                       .select('orders.*, users.fullname, users.image, users.email, users.uid')
                       .where('(start_date BETWEEN ? AND ?) AND status <> ?', first_of_month, end_of_month, 2)
       @events.each{ |e| e.image = avatar_url(e) }
-    #  @days = Calendar.where("food_id = ? AND day BETWEEN ? AND ?", params[:food_id], first_of_month, end_of_month)
+      @days = Calendar.where("food_id = ? AND day BETWEEN ? AND ?", params[:food_id], first_of_month, end_of_month)
     else
       @food = nil
       @events = []

@@ -30,7 +30,9 @@
 								<tbody>
 								<tr>
 
-									<td><img src="<%= get_pic(product)%>" class="img-thumbnail"><%= product[:name] %></td>  
+									<td>
+
+										<img src="<%= get_pic(product)%>" class="img-thumbnail"><%= product[:name] %></td>  
 									<td class="text-right">$<%= number_with_precision(product[:unit_price], :precision => 2) %></td>
 									<td class="text-right">$<%= product[:start_date].strgtime("%v") %> </td>
 									<td class="text-right">$<%= product[:end_date] %> </td>
@@ -78,26 +80,26 @@
 								<% session[:cart_obj].each do |cart_obj| %>
 								<tbody>
 								<tr> 
-									<td>
-										<%= cart_obj["food_id"].to_i %> 
-										<% foodObj = Food.find cart_obj[:food_id].to_i %>
+									<td>  
+										<% foodObj = Food.find cart_obj.fetch("food_id").to_i %>
 										<%= image_tag foodObj.cover_photo(nil), width: "120px" %> 
 									</td>  
-									<td class="text-right">$<%= number_with_precision(cart_obj[:unit_price], :precision => 2) %></td>
+									<td class="text-right">$<%= number_with_precision( cart_obj.fetch("unit_price"), :precision => 2) %></td>
 									<td class="text-right">
-										<%=cart_obj[:start_date] %> 
+										<%= cart_obj.fetch("start_date") %> 
 
 									<td class="text-right">
-										<%=cart_obj[:end_date] %> 
+										<%= cart_obj.fetch("end_date") %> 
 
 									<td class="text-right">
-										<%=cart_obj[:per_day_qty] %> 
+										<%= cart_obj.fetch("per_day_qty") %> 
 									</td>
 									<td class="text-right">
-										<%=cart_obj[:total_quantity] %> 
+										<%= cart_obj.fetch("total_quantity") %> 
 									</td>
-									<td class="text-right">$<%= number_with_precision(cart_obj[:price], :precision => 2) %> </td>
-									<td class="text-right"><a href="#" onclick="onRemoveProduct('<%= cart_obj[:listing_name]%>')"><i class="glyphicon glyphicon-remove"></i></td>
+									<td class="text-right">$<%= number_with_precision(cart_obj.fetch("price"), :precision => 2) %>  
+								</td> 
+									<td class="text-right"><a href="#" onclick="onRemoveProduct('<%= cart_obj.fetch("name") %>')"><i class="glyphicon glyphicon-remove"></i></td>
 								</tr>
 								</tbody>
 								<%end%>
@@ -108,13 +110,13 @@
 							
 						<% if session[:cart_obj] && session[:cart_obj].size > 0 %>
 						
-							<h3 class="pull-right">Subtotal: $<%= number_with_precision(get_sub_total, :precision => 2) %></h3>
+							<h4 class="pull-right">Total: $<%= number_with_precision(get_sub_total, :precision => 2) %></h4>
 							<div id="discoutDiv">
 							</div> 	
 							<div class="clearfix"></div>  
 							
-							</div>
-							
+							</div> 
+
 						<%end%>
 							
 						<%= link_to "Continue Shopping", "redirect url", :class=>"btn btn-form btn-small pull-left"%>
