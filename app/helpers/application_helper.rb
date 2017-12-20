@@ -8,18 +8,23 @@ module ApplicationHelper
     end
   end
 
+  def stripe_express_path
+    "https://connect.stripe.com/express/oauth/authorize?response_type=code&client_id=ca_By9Zm5U52iH5EfrRjofR49oK8c17vGCs&scope=read_write"
+
+  end
+
   def get_sub_total
     sub_total = 0
-    if session[:cart_obj] && session[:cart_obj].size > 0  
-      session[:cart_obj].each do |d|    
+    if session[:cart_obj] && session[:cart_obj].size > 0
+      session[:cart_obj].each do |d|
         sub_total += d.fetch("price").to_f
-      end 
+      end
     end
     return sub_total
   end
 
-  def products_in_cart 
-    return session[:cart_obj] && session[:cart_obj].size > 0   
+  def products_in_cart
+    return session[:cart_obj] && session[:cart_obj].size > 0
   end
-  
+
 end
