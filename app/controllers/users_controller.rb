@@ -72,9 +72,50 @@ rescue Stripe::CardError => e
 end
 
 
+def process_payment
+  @error = ""
+    begin
+      # Charge the customer's card:
+      charge = Stripe::Charge.create(
+        :amount => get_total_amount,
+        :currency => "usd",
+        :description => "food payment",
+        card: {name: params[:card][:name], number:params[:card][:number], cvc: params[:card][:cvv], 
+              exp_month: params[:card][:exp_month], exp_year:params[:card][:exp_year]}
+      ) 
+      
+      # save this in db for future reference
+      logger.info charge.id 
+
+    rescue Stripe::CardError => e
+      flash.alert = e.message 
+      @error = e.message 
+    end
+
+    if @error == ""
+      session[:cart_obj] = nil
+    end
+
+end
+
+  def thanks
+
+  end
+
+
   private
 
   
+    def get_total_amount
+    sub_total = 0
+    if session[:cart_obj] && session[:cart_obj].size > 0
+      session[:cart_obj].each do |d|
+        sub_total += d.fetch("price").to_f
+      end
+    end 
+    return (sub_total*100).to_i
+  end
+
     def user_params
       params.require(:user).permit(:phone_number, :pin)
     end

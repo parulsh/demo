@@ -1,0 +1,5 @@
+<% if @error == "" %> 
+	window.location.href = '/payment-thanks';
+<%else%> 
+	$(".payment-errors").text("<%=@error%>");	
+<%end%>

@@ -71,6 +71,8 @@ Rails.application.routes.draw do
   get '/host_calendar' => 'calendars#host'
   get '/payment_method' => "users#payment"
   get '/payout_method' => "users#payout"
-  post '/add_card' => "users#add_card"
+  post '/process_payment' => "users#process_payment"
+
+   get 'payment-thanks', to: 'users#thanks', as: 'payment_thanks'
 
 end
