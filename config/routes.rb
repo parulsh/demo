@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
 
   root 'pages#home'
-  
+
 
   devise_for :users,
              path: '',
@@ -69,8 +69,12 @@ Rails.application.routes.draw do
   end
 
   get '/host_calendar' => 'calendars#host'
-  get '/payment_method' => "users#payment"
-  get '/payout_method' => "users#payout"
+  get '/payment_method' => 'users#payment'
   post '/add_card' => "users#add_card"
+  
+  get '/payout_method' => "users#payout"
+  post '/process_payment' => "users#process_payment"
+
+   get 'payment-thanks', to: 'users#thanks', as: 'payment_thanks'
 
 end

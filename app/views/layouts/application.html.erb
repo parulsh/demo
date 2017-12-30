@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/hot-sneaks/jquery-ui.css">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
       <link rel="stylesheet" href="http://resources/demos/style.css">
+    <%= tag :meta, name: "stripe-publishable-key", content: Rails.application.secrets.stripe_publishable_key %>
 
   </head>
 
