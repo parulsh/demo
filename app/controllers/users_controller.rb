@@ -110,6 +110,37 @@ end
   end
 
 
+def process_payment
+  @error = ""
+    begin
+      # Charge the customer's card:
+      charge = Stripe::Charge.create(
+        :amount => get_total_amount,
+        :currency => "usd",
+        :description => "food payment",
+        card: {name: params[:card][:name], number:params[:card][:number], cvc: params[:card][:cvv],
+              exp_month: params[:card][:exp_month], exp_year:params[:card][:exp_year]}
+      )
+
+      # save this in db for future reference
+      logger.info charge.id
+
+    rescue Stripe::CardError => e
+      flash.alert = e.message
+      @error = e.message
+    end
+
+    if @error == ""
+      session[:cart_obj] = nil
+    end
+
+end
+
+  def thanks
+
+  end
+
+
   private
 
 
