@@ -12,7 +12,10 @@
       <div class="panel-heading">Payment Method</div>
       <div class="panel-body">
         <div class="container">
-            <%= form_tag("/add_card", method: "post", id: "add-card") do %>
+
+
+
+          <%= form_tag("/process_payment", method: "post", id: "add-card", remote: true) do %>
 
                 <label>
                   <span>Name</span>
@@ -36,6 +39,7 @@
 
 
             <% end %>
+
         </div>
       </div>
     </div>
@@ -46,7 +50,7 @@
 <script>
   $(function() {
 
-    var stripe = Stripe('<%= Rails.configuration.stripe[:pk_test_6VEN3sDmT1C5AjkJdXHm4TMV] %>');
+    var stripe = Stripe('<%= Rails.configuration.stripe[:publishable_key] %>');
     var elements = stripe.elements();
 
     var card = elements.create('card', {
