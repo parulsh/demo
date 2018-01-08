@@ -1,6 +1,6 @@
 module ApplicationHelper
   def avatar_url(user)
-    if user.image
+    if user.try(:image)
       "http://graph.facebook.com/#{user.uid}/picture?type=large"
     else
     gravatar_id = Digest::MD5::hexdigest(user.email).downcase
@@ -26,5 +26,35 @@ module ApplicationHelper
   def products_in_cart
     return session[:cart_obj] && session[:cart_obj].size > 0
   end
+ 
+  def get_card_number 
+    number = "" 
+    if session[:card_params]
+      number = session[:card_params]["number"] rescue ''
+    end
+    return number
+  end
+
+  def get_card_name
+    number = "" 
+    if session[:card_params]
+      number = session[:card_params]["name"] rescue ''
+    end
+    return number
+  end
+
+  def get_card_cvv
+    number = "" 
+    if session[:card_params]
+      number = session[:card_params]["cvv"] rescue ''
+    end
+    return number
+  end
+
+  def get_card_exp   
+    return session[:card_params]["card"]["expiry"] rescue ''
+  end
+ 
+
 
 end

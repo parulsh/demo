@@ -49,8 +49,6 @@ class UsersController < ApplicationController
 end
 
 def add_card
-
-  
   if current_user.stripe_id.blank?
     customer = Stripe::Customer.create(
       email: current_user.email
@@ -60,8 +58,6 @@ def add_card
   else
     customer = Stripe::Customer.retrieve(current_user.stripe_id)
   end
-
-
   month, year = params[:expiry].split(/ \/ /)
   new_token = Stripe::Token.create(:card => {
       :number => params[:number],
@@ -80,110 +76,64 @@ rescue Stripe::CardError => e
 end
 
 
-def process_payment 
+def process_payment
+  session[:card_params] = params
   customer = nil
   if current_user.stripe_id.blank?
     customer = Stripe::Customer.create(
       email: current_user.email
     )
     current_user.stripe_id = customer.id
-    current_user.save 
+    current_user.save
   else
     customer = Stripe::Customer.retrieve(current_user.stripe_id)
-  end  
+  end
 
-  exp_string = params[:card][:expiry].split("/") rescue [] 
-  exp_month = exp_string[0] rescue ''
-  exp_year = exp_string[1] rescue ''
   @error = ""
+  token_id = nil
   begin
-    new_token = Stripe::Token.create(:card => {
-      :number => params[:card][:number],
-      :exp_month => exp_month,
-      :exp_year => exp_year,
-      :cvc => params[:card][:cvv]
+    new_token = Stripe::Token.create(:card => card_params)
+    token_id = new_token.id
+    customer.sources.create(source: new_token.id)
+  rescue Stripe::CardError => e
 
-    })
-    customer.sources.create(source: new_token.id)   
-    rescue Stripe::CardError => e 
+    flash.alert = e.message
+    @error = e.message
+    flash[:alert] = e.message
+    redirect_to payment_method_path
+  end
 
-      flash.alert = e.message
-      @error = e.message
-    end
+  logger.info token_id.inspect
 
-    if @error.blank?
-      begin
-        # Charge the customer's card:
-        Stripe::Charge.create(
-        :amount => get_total_amount,       
+  if @error.blank?
+    begin
+      #Charge the customer's card:
+        charge = Stripe::Charge.create(
+        :amount => get_total_amount,
         :currency => "usd",
-<<<<<<< HEAD
-        :source => customer.default_source,  
-        :description => "food payment"
-      ) 
-=======
-        :description => "food payment",
-        card: {name: params[:card][:name], number:params[:card][:number], cvc: params[:card][:cvv],
-              exp_month: params[:card][:exp_month], exp_year:params[:card][:exp_year]}
-      )
+        :card => card_params,
+        :description => "food payment")
 
-      # save this in db for future reference
-      logger.info charge.id
+      #save stripe charged token to orders table i.e. charge.id
+      logger.info charge.id.inspect
 
-    rescue Stripe::CardError => e
-      flash.alert = e.message
-      @error = e.message
+      rescue Stripe::CardError => e
+        flash.alert = e.message
+        @error = e.message
+        flash[:alert] = e.message
+        redirect_to payment_method_path
+      end
+
+      if @error == ""
+        session[:cart_obj] = nil
+        redirect_to '/payment-thanks'
+      end
     end
-
-    logger.info @error.inspect
-    if @error == ""
-      session[:cart_obj] = nil
-    end
-
 end
 
   def thanks
 
   end
-
-
-def process_payment
-  @error = ""
-    begin
-      # Charge the customer's card:
-      charge = Stripe::Charge.create(
-        :amount => get_total_amount,
-        :currency => "usd",
-        :description => "food payment",
-        card: {name: params[:card][:name], number:params[:card][:number], cvc: params[:card][:cvv],
-              exp_month: params[:card][:exp_month], exp_year:params[:card][:exp_year]}
-      )
-
-      # save this in db for future reference
-      logger.info charge.id
-
-    rescue Stripe::CardError => e
-      flash.alert = e.message
-      @error = e.message
-    end
->>>>>>> 62f685dcebcd06779f1f74b203f754f086f8a41f
-
-      rescue Stripe::CardError => e 
-        flash.alert = e.message
-        @error = e.message
-      end
-
-      logger.info @error.inspect
-      if @error == ""
-        session[:cart_obj] = nil
-      end
-    end 
-  end
-
-  def thanks
-
-  end
- 
 
   private
 
@@ -201,4 +151,11 @@ def process_payment
     def user_params
       params.require(:user).permit(:phone_number, :pin)
     end
+
+    def card_params
+      month, year = params[:expiry].split(/ \/ /)
+      card = { number: params[:number], exp_month: month, exp_year: year, cvc: params[:cvv]}
+      return card
+    end
+
 end
