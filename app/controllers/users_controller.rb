@@ -49,6 +49,8 @@ class UsersController < ApplicationController
 end
 
 def add_card
+
+  
   if current_user.stripe_id.blank?
     customer = Stripe::Customer.create(
       email: current_user.email
@@ -58,6 +60,8 @@ def add_card
   else
     customer = Stripe::Customer.retrieve(current_user.stripe_id)
   end
+
+
   month, year = params[:expiry].split(/ \/ /)
   new_token = Stripe::Token.create(:card => {
       :number => params[:number],
@@ -76,65 +80,78 @@ rescue Stripe::CardError => e
 end
 
 
-def process_payment
-  session[:card_params] = params
+def process_payment 
+
+  session[:cart_obj].each do |obj|
+    logger.info obj.inspect
+  end
+   session[:card_params] = params
   customer = nil
   if current_user.stripe_id.blank?
     customer = Stripe::Customer.create(
       email: current_user.email
     )
     current_user.stripe_id = customer.id
-    current_user.save
+    current_user.save 
   else
     customer = Stripe::Customer.retrieve(current_user.stripe_id)
-  end
-
+  end  
+ 
   @error = ""
-  token_id = nil
   begin
-    new_token = Stripe::Token.create(:card => card_params)
-    token_id = new_token.id
-    customer.sources.create(source: new_token.id)
-  rescue Stripe::CardError => e
+    new_token = Stripe::Token.create(:card => card_params )
+    customer.sources.create(source: new_token.id)   
+    rescue Stripe::CardError => e 
 
-    flash.alert = e.message
-    @error = e.message
-    flash[:alert] = e.message
+      flash.alert = e.message
+      @error = e.message
+      flash[:alert] = e.message
     redirect_to payment_method_path
-  end
+    end
 
-  logger.info token_id.inspect
-
-  if @error.blank?
-    begin
-      #Charge the customer's card:
+    if @error.blank?
+      begin
+        # Charge the customer's card:
         charge = Stripe::Charge.create(
-        :amount => get_total_amount,
+        :amount => get_total_amount,       
         :currency => "usd",
-        :card => card_params,
-        :description => "food payment")
+        :card => card_params,  
+        :description => "food payment"
+      ) 
 
       #save stripe charged token to orders table i.e. charge.id
       logger.info charge.id.inspect
 
-      rescue Stripe::CardError => e
+      rescue Stripe::CardError => e 
         flash.alert = e.message
         @error = e.message
         flash[:alert] = e.message
         redirect_to payment_method_path
       end
+ 
+      if @error == ""  
+        total_price = get_total_amount/100
+        order = Order.new(user_id: current_user.id, price: total_price, status: "Approved", stripe_id: charge.id)
+        order.save!
 
-      if @error == ""
+        session[:cart_obj].each do |obj|
+          total_days = (obj.fetch("end_date").to_date - obj.fetch("start_date").to_date).to_i + 1
+          total_price = total_days * obj.fetch("per_day_qty").to_f * obj.fetch("unit_price").to_f
+          order_item =  OrderFood.new(order_id: order.id, food_id: obj.fetch("food_id"), quantity_per_day: obj.fetch("per_day_qty"), price: total_price, 
+                                start_date:  obj.fetch("start_date").to_date , end_date: obj.fetch("end_date").to_date )
+          order_item.save!
+        end 
         session[:cart_obj] = nil
+        session[:card_params] = nil
         redirect_to '/payment-thanks'
       end
-    end
+    end 
 end
 
   def thanks
 
   end
-
+ 
   private
 
 
@@ -153,7 +170,7 @@ end
     end
 
     def card_params
-      month, year = params[:expiry].split(/ \/ /)
+      month, year = params[:expiry].split(/ \/ /)      
       card = { number: params[:number], exp_month: month, exp_year: year, cvc: params[:cvv]}
       return card
     end

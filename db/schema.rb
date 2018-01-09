@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171218014847) do
+ActiveRecord::Schema.define(version: 20180108130902) do
 
   create_table "calendars", force: :cascade do |t|
     t.date     "day"
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(version: 20171218014847) do
     t.index ["user_id"], name: "index_foods_on_user_id"
   end
 
+  create_table "order_foods", force: :cascade do |t|
+    t.integer  "order_id"
+    t.integer  "food_id"
+    t.float    "price"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "quantity_per_day"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "food_id"
@@ -66,6 +77,7 @@ ActiveRecord::Schema.define(version: 20171218014847) do
     t.time     "time_pickup"
     t.integer  "portion_number"
     t.integer  "status",         default: 0
+    t.string   "stripe_id"
     t.index ["food_id"], name: "index_orders_on_food_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
