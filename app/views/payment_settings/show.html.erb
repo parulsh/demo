@@ -11,12 +11,12 @@
       <div class="panel-heading">Payout Method</div>
       <div class="panel-body">
         <div class="container text-center">
-          <% if current_user.merchant_id.blank? %>
-              <%= link_to image_tag('stripe_button.png'), stripe_express_path %>
+          <% if !current_user.stripe_connected? %>
+              <%= link_to image_tag('stripe_button.png'), connect_with_stripe_payment_setting_path %>
           <% else %>
               <br/>
               <div class="text-center">
-                <%= link_to "Express Dashboard", @login_link.url, class: "btn btn-normal" %>
+                <%= link_to "Connected", "#", class: "btn btn-normal" %>
               </div>
           <% end %>
         </div>
@@ -24,3 +24,10 @@
     </div>
   </div>
 </div>
+
+
+<% if current_user.stripe_connected? %>
+  <%= "connected" %>
+<% else %>
+  <%= link_to "Connect with stripe", connect_with_stripe_payment_setting_path %>
+<% end %>

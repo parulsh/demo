@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
          has_many :foods
          has_many :orders
-
+         has_one :payment_setting
          has_many :foodie_reviews, class_name: "FoodieReview", foreign_key: "foodie_id"
          has_many :chef_reviews, class_name: "ChefReview", foreign_key: "chef_id"
 
@@ -53,6 +53,8 @@ class User < ApplicationRecord
           update(phone_verified: true) if self.pin == entered_pin
         end
 
-
+        def stripe_connected?
+          payment_setting.blank? ? false : payment_setting.is_stripe_connected?
+        end
 
       end

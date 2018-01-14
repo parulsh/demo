@@ -1,3 +1,6 @@
+ENV['STRIPE_SECRET_KEY'] = 'sk_test_SS6OtFn6X6NuPy3lIlZmmAfL'
+ENV['STRIPE_CLIENT_ID'] = 'ca_Af2pVtEBSxRBhszFjHPzunOfbhA6P0DK'
+ENV['DOMAIN_URL'] = "http://localhost:3000"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -52,16 +55,16 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: 'smtp.mailgun.org',
-    port: 587,
-    domain:'sandbox860e0f2901e94f8f857965b697bb3f6c.mailgun.org',
-    authentication: 'plain',
-    user_name: 'postmaster@sandbox860e0f2901e94f8f857965b697bb3f6c.mailgun.org',
-    password: '1823fc1a8a817a66da719541ea915635'
-  }
+  config.action_mailer.delivery_method = :letter_opener
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address: 'smtp.mailgun.org',
+  #   port: 587,
+  #   domain:'sandbox860e0f2901e94f8f857965b697bb3f6c.mailgun.org',
+  #   authentication: 'plain',
+  #   user_name: 'postmaster@sandbox860e0f2901e94f8f857965b697bb3f6c.mailgun.org',
+  #   password: '1823fc1a8a817a66da719541ea915635'
+  # }
 
   # config.action_mailer.smtp_settings = {
   #  address: 'smtp.gmail.com',

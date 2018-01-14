@@ -18,6 +18,7 @@ gem 'jbuilder', '~> 2.5'
 
 group :development, :test do
   gem 'byebug', platform: :mri
+  gem "letter_opener", :group => :development
 end
 
 group :development do
@@ -57,3 +58,5 @@ gem 'stripe'
 gem 'rails-assets-card', source: 'https://rails-assets.org'
 
 gem 'omniauth-stripe-connect', '~> 2.10.0'
+gem 'oauth2'
+gem 'stripe'

@@ -77,4 +77,11 @@ Rails.application.routes.draw do
 
    get 'payment-thanks', to: 'users#thanks', as: 'payment_thanks'
 
+  resource :payment_setting, only: :show do
+    member do
+      get :connect_with_stripe
+      get :update_stripe_merchant_details
+    end
+  end
+
 end
