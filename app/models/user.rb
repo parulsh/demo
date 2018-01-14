@@ -57,4 +57,8 @@ class User < ApplicationRecord
           payment_setting.blank? ? false : payment_setting.is_stripe_connected?
         end
 
+        def get_account_id
+          payment_setting.stripe_user_id rescue nil
+        end
+
       end

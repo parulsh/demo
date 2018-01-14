@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include Orderable
   before_action :authenticate_user!, except: [:show]
 
   def show
@@ -99,8 +100,8 @@ def process_payment
  
   @error = ""
   begin
-    new_token = Stripe::Token.create(:card => card_params )
-    customer.sources.create(source: new_token.id)   
+    # new_token = Stripe::Token.create(:card => card_params )
+    # customer.sources.create(source: new_token.id)   
     rescue Stripe::CardError => e 
 
       flash.alert = e.message
@@ -110,24 +111,9 @@ def process_payment
     end
 
     if @error.blank?
-      begin
-        # Charge the customer's card:
-        charge = Stripe::Charge.create(
-        :amount => get_total_amount,       
-        :currency => "usd",
-        :card => card_params,  
-        :description => "food payment"
-      ) 
-
-      #save stripe charged token to orders table i.e. charge.id
-      logger.info charge.id.inspect
-
-      rescue Stripe::CardError => e 
-        flash.alert = e.message
-        @error = e.message
-        flash[:alert] = e.message
-        redirect_to payment_method_path
-      end
+      charge = execute_stripe_payment
+      sellers = get_sellers
+      execute_transfer_payment(charge.id, sellers)
  
       if @error == ""  
         total_price = get_total_amount/100
