@@ -275,6 +275,6 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
   config.omniauth :facebook, '1932272337011623', 'f29d9fe71cde99c32d6818f14cfd8e26', scope: 'email', info_fields: 'email, name'
-  config.omniauth :stripe_connect, 'ca_By9Zm5U52iH5EfrRjofR49oK8c17vGCs', 'sk_test_ZjkKy8vrVwMO5l1GivbO5BWC', scope: 'read_write', stripe_landing: 'login'
+  config.omniauth :stripe_connect, 'ca_Af2pVtEBSxRBhszFjHPzunOfbhA6P0DK', 'sk_test_SS6OtFn6X6NuPy3lIlZmmAfL', scope: 'read_write', stripe_landing: 'login'
 
 end
