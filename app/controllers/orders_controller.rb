@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, except: [:cart, :my_cart, :remove_product_from_session]
-  before_action :set_order, only: [:approve, :decline]
+  before_action :set_order, only: [:approve, :decline, :show]
 
   def create
     food = Food.find(params[:food_id])
@@ -120,9 +120,10 @@ class OrdersController < ApplicationController
   end
 
   def your_orders
-    @foods = current_user.foods
-
+    @orders = current_user.orders
   end
+
+  def show;  end
 
   def approve
       charge(@order.food, @order)

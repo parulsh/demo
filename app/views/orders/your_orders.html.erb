@@ -12,55 +12,25 @@
         Your Orders
       </div>
       <div class="panel-body">
-
-
-        <% @foods.each do |food| %>
-            <% food.orders.each do |order| %>
-
-                <div class="row">
-
-                  <div class="col-md-2">
-
-                      <p><%= order.status %></p>
-                      <div class="form-inline">
-                      <% if order.Waiting? %>
-                          <%= link_to approve_order_path(order), method: :post do %> <i class="fa fa-thumbs-up fa-lg"></i> <% end %> |
-                          <%= link_to decline_order_path(order), method: :post do %> <i class="fa fa-thumbs-down fa-lg"></i> <% end %>
-                      <% end %>
-                    </div>
-                  </div>
-
-                  <div class="col-md-2">
-                    <%= link_to food_path(order.food) do %>
-                        <%= image_tag order.food.cover_photo(:thumb) %>
-                    <% end %>
-                  </div>
-                  <div class="col-md-5">
-                    <%= link_to order.food.listing_name, food_path(order.food) %><br/><br/>
-                    <span>
-                      <%= link_to user_path(order.user) do %>
-                        <%= image_tag avatar_url(order.user), class: "img-circle avatar-medium" %>
-                        <%= order.user.fullname %>
-                      <% end %>
-                    </span>
-                  </div>
-
-                  <div class="col-md-3 text-right">
-                    <%= render partial: "reviews/chef_form", locals: {order: order} if order.Approved? %>
-                  </div>
-
-
-                </div>
-                <hr/>
-
-            <% end %>
-        <% end %>
-
-
-
-
-
+        <table class="table">
+          <tr>
+            <td>S.No</td>
+            <td>Price</td>
+            <td>Ordered At</td>
+            <td>Status</td>
+            <td></td>
+          </tr>
+          <% @orders.each_with_index do |order,i| %>
+            <tr>
+              <td><%= i+1 %></td>
+              <td>$<%= order.price %></td>
+              <td><%= order.created_at.strftime("%d/%m/%Y") %></td>
+              <td><%= order.status %></td>
+              <td><%= link_to "View", order_path(order.id), class: "btn btn-form" %></td>
+            </tr> 
+          <% end %>
+        </table>
       </div>
     </div>
   </div>
-  </div>
+</div>

@@ -60,7 +60,7 @@ Rails.application.routes.draw do
 
   get 'dashboard' => 'dashboards#index'
 
-  resources :orders, only: [:approve, :decline] do
+  resources :orders, only: [:approve, :decline, :show] do
     member do
       post '/approve' => "orders#approve"
       post '/decline' => "orders#decline"
