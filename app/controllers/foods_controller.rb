@@ -7,6 +7,7 @@ class FoodsController < ApplicationController
   end
 
   def new
+    check_stripe_connected
     @food = current_user.foods.build
   end
 
@@ -110,5 +111,10 @@ class FoodsController < ApplicationController
      params.require(:food).permit(:cuisine_type, :entree_type, :portions_available, :listing_name, :summary, :address, :price,
       :organic, :vegan, :vegetarian, :gluten_free, :other_diets, :milk, :eggs, :chicken, :redmeat, :fish, :other, :active, :instant)
 
+  end
+
+  def check_stripe_connected
+    return if current_user.stripe_connected?
+    redirect_to payment_setting_path, alert: "Please connect your account first."
   end
 end
