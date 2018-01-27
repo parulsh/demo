@@ -10,18 +10,20 @@
           <tr>
             <td>S.No</td>
             <td>Price</td>
+            <td>You Recieved</td>
             <td>Ordered At</td>
             <td>Status</td>
             <td></td>
           </tr>
-          <% @orders.each_with_index do |order,i| %>
+          <% @order_foods.each_with_index do |of,i| %>
             <tr>
               <td><%= i+1 %></td>
-              <td>$<%= order.price %></td>
-              <td><%= order.created_at.strftime("%d/%m/%Y") %></td>
-              <td><%= order.status %></td>
-              <td><%= link_to "View", order_path(order.id), class: "btn btn-form" %></td>
-            </tr> 
+              <td>$<%= of.price %></td>
+              <td>$<%= (of.price.to_f*0.85).round(2) rescue nil %></td>
+              <td><%= of.created_at.strftime("%d/%m/%Y") %></td>
+              <td><%= of.order.status %></td>
+              <td><%= link_to "Food", food_path(of.food_id), class: "btn btn-form" %></td>
+            </tr>
           <% end %>
         </table>
       </div>

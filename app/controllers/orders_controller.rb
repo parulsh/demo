@@ -135,7 +135,10 @@ class OrdersController < ApplicationController
     redirect_to your_orders_path
   end
 
-
+  def meals_sold
+    @order_foods = OrderFood.where(food_id: User.second.foods.map(&:id))
+  end
+  
   private
 
     def set_order
