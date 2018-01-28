@@ -136,7 +136,7 @@ class OrdersController < ApplicationController
   end
 
   def meals_sold
-    @order_foods = OrderFood.where(food_id: User.second.foods.map(&:id))
+    @order_foods = OrderFood.where(food_id: current_user.foods.map(&:id))
   end
   
   private
