@@ -1,12 +1,12 @@
 <!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-normal" data-toggle="modal" data-target="#myModal_<%= order.id %>">
+<button type="button" class="btn btn-normal" data-toggle="modal" data-target="#myModal_<%= order_food.id %>">
 
   Review Your Custumer
 
 </button>
 
 <!-- Modal -->
-<div id="myModal_<%= order.id %>" class="modal fade" role="dialog">
+<div id="myModal_<%= order_food.id %>" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -18,15 +18,16 @@
       <div class="modal-body">
         <%= form_for current_user.chef_reviews.new do |f| %>
                 <div class="form-group text-center">
-                  <div id="stars_<%= order.id %>"></div>
+                  <div id="stars_<%= order_food.id %>"></div>
                 </div>
                 <div class="form-group">
                   <%= f.text_area :comment, rows: 3, class: "form-control" %>
                 </div>
 
-                <%= f.hidden_field :food_id, value: order.food.id %>
-                <%= f.hidden_field :order_id, value: order.id %>
-                <%= f.hidden_field :foodie_id, value: order.user.id %>
+                <%= f.hidden_field :order_food_id, value: order_food.id %>
+                <%= f.hidden_field :food_id, value: order_food.food_id %>
+                <%#= f.hidden_field :order_id, value: order_food.order_id %>
+                <%= f.hidden_field :foodie_id, value: order_food.order.user_id %>
 
                 <div class="text-center">
                   <%= f.submit "Add Review", class: "btn btn-normal" %>
@@ -39,7 +40,7 @@
     </div>
 
     <script>
-      $('#stars_<%= order.id %>').raty({
+      $('#stars_<%= order_food.id %>').raty({
         path: '/assets',
         scoreName: 'chef_review[star]',
         score: 1

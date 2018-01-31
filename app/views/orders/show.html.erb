@@ -69,6 +69,7 @@
                       <th class="text-right">End Date</th>
                       <th class="text-right">Qty</th>
                       <th class="text-right">Subtotal</th>
+                      <th>Review</th>
                     </tr>
                   </thead>
 
@@ -88,6 +89,13 @@
                           <%= cart_obj.try(:quantity_per_day) %>
                         </td>
                         <td class="text-right">$<%= number_with_precision(cart_obj.try(:price), :precision => 2) %>
+                        </td>
+                        <td>
+                          <% if cart_obj.is_reviewed? %>
+                            <div id="stars_<%= cart_obj.id %>"></div>
+                          <% else %>
+                          <%= render partial: "reviews/foodie_form", locals: {order_food: cart_obj} %>
+                          <% end %>
                         </td>
                       </tr>
                     </tbody>
@@ -111,3 +119,15 @@
   </div>
 </div>
 
+
+<script>
+  <% @order.order_foods.each do |cart_obj| %>
+    <% if cart_obj.is_reviewed? %>
+      $('#stars_<%= cart_obj.id %>').raty({
+        path: '/assets',
+        scoreName: 'chef_review[star]',
+        score: <%= cart_obj.get_reviews %>
+      });
+    <% end %>
+  <% end %>
+</script>

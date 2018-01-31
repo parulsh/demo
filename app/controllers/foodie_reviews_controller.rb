@@ -5,16 +5,17 @@ class FoodieReviewsController < ApplicationController
 
     # Step 2: Check if the current chef already reviewed the guest in this reservation.
 
-    @order = Order.where(
-                    id: foodie_review_params[:order_id],
-                    food_id: foodie_review_params[:food_id],
+    # @order = Order.where(
+    #                 id: foodie_review_params[:order_id],
+    #                 food_id: foodie_review_params[:food_id],
 
-                   ).first
+    #                ).first
+    @order_food = OrderFood.find_by_id(foodie_review_params[:order_food_id])
 
-    if !@order.nil? && @order.food.user.id == foodie_review_params[:chef_id].to_i
+    if !@order_food.nil? && @order_food.food_id == foodie_review_params[:chef_id].to_i
 
       @has_reviewed = FoodieReview.where(
-                        order_id: @order.id,
+                        order_food_id: @order_food.id,
                         chef_id: foodie_review_params[:chef_id]
                       ).first
 
@@ -42,6 +43,6 @@ class FoodieReviewsController < ApplicationController
 
   private
     def foodie_review_params
-      params.require(:foodie_review).permit(:comment, :star, :food_id, :order_id, :chef_id)
+      params.require(:foodie_review).permit(:comment, :star, :food_id, :order_id, :chef_id, :order_food_id)
     end
 end
