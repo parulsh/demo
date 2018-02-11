@@ -645,3 +645,25 @@ a {
 .example.example3 .success .reset path {
   fill: #fff;
 }
+
+.message-box{
+  min-height: 100px;
+}
+.img-circle{
+  width: 40px
+}
+
+.unread-button {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 30px;
+}
+.unread-button {border-radius: 50%;}

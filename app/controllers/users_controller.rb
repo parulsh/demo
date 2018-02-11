@@ -2,6 +2,10 @@ class UsersController < ApplicationController
   include Orderable
   before_action :authenticate_user!, except: [:show]
 
+  def index
+    @users = User.except_user(current_user)
+  end
+
   def show
     @user = User.find(params[:id])
     @foods = @user.foods

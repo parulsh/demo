@@ -20,6 +20,7 @@
 //= require fullcalendar 
 //= require card
 //= require bootstrap-datepicker
+//= require cable
 //= require_tree .
 
 

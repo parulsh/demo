@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180108130902) do
+ActiveRecord::Schema.define(version: 20180203183815) do
 
   create_table "calendars", force: :cascade do |t|
     t.date     "day"
@@ -54,6 +54,14 @@ ActiveRecord::Schema.define(version: 20180108130902) do
     t.index ["user_id"], name: "index_foods_on_user_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.text     "body"
+    t.integer  "user_id"
+    t.integer  "sender_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "order_foods", force: :cascade do |t|
     t.integer  "order_id"
     t.integer  "food_id"
@@ -82,6 +90,16 @@ ActiveRecord::Schema.define(version: 20180108130902) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
+  create_table "payment_settings", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "stripe_user_id"
+    t.boolean  "is_stripe_connected"
+    t.string   "stripe_secret_key"
+    t.string   "stripe_publishable_key"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "photos", force: :cascade do |t|
     t.integer  "food_id"
     t.datetime "created_at",         null: false
@@ -95,14 +113,15 @@ ActiveRecord::Schema.define(version: 20180108130902) do
 
   create_table "reviews", force: :cascade do |t|
     t.text     "comment"
-    t.integer  "star",       default: 1
+    t.integer  "star",          default: 1
     t.integer  "food_id"
     t.integer  "order_id"
     t.integer  "chef_id"
     t.integer  "foodie_id"
     t.string   "type"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "order_food_id"
     t.index ["chef_id"], name: "index_reviews_on_chef_id"
     t.index ["food_id"], name: "index_reviews_on_food_id"
     t.index ["foodie_id"], name: "index_reviews_on_foodie_id"

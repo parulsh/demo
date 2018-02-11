@@ -12,7 +12,9 @@ class User < ApplicationRecord
          has_one :payment_setting
          has_many :foodie_reviews, class_name: "FoodieReview", foreign_key: "foodie_id"
          has_many :chef_reviews, class_name: "ChefReview", foreign_key: "chef_id"
-
+         has_many :messages,dependent: :destroy 
+         scope :except_user, ->(current_user) { where.not(id: current_user) }
+         has_many :chatrooms
          def self.from_omniauth(auth)
            user = User.where(email: auth.info.email).first
 

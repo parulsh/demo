@@ -1,0 +1,10 @@
+<div class="panel panel-default">
+  <div class="panel-body message-box">
+    <div class="pull-right"><%= message.timestamp %></div>
+    <div class="">
+      <img src="/assets/dummy.jpg" class="img-circle" alt="Cinque Terre">
+      <%= message.try(:sender).try(:fullname) %>
+    </div><br>
+    <%= message.try(:body) %></span>
+  </div>
+</div>

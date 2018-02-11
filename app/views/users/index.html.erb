@@ -1,0 +1,29 @@
+
+<%if @user.present?%>
+  <div class="row col-md-8 col-md-offset-2">
+    <div class="panel panel-default">
+      <div class="panel-heading"><%= @chatroom.get_conversation_user(current_user) %></div>
+      <div class="panel-body">
+        <div class="container text-center">
+          <div class="text-center">
+            <%=form_for @message, url: messages_path(remote: true) do |f|%>
+              <%= f.text_field :body, class: "form-control", data: {textarea: "message"}, placeholder: "Add a personal message" %>
+              <%= f.hidden_field :room_id, value:  @chatroom.id %>
+              <%= hidden_field_tag :user_id,  @user.id %><br>
+              <%= f.submit "Send Message", class: "btn btn-normal"%><br>
+            <%end%>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h1><%#= @room.title %></h1>
+    <div class="">
+      <div class="" id="messages" data-chat-room-id="<%= @chatroom.id %>" class="message_<%=@user.id%>">
+        <%= render partial: 'messages/message', collection: @messages%>
+      </div>
+    </div>
+  </div>
+
+<%end%>
+

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
              path_names: {sign_in: 'login', sign_out: 'logout', edit: 'profile', sign_up: 'registration'},
              controllers: {omniauth_callbacks: 'omniauth_callbacks', registrations: 'registrations'}
 
-  resources :users, only: [:show] do
+  resources :users, only: [:show,:index] do
     member do
       post '/verify_phone_number' => 'users#verify_phone_number'
       patch '/update_phone_number' => 'users#update_phone_number'
@@ -84,5 +84,9 @@ Rails.application.routes.draw do
       get :update_stripe_merchant_details
     end
   end
+
+  mount ActionCable.server => '/cable'
+  get 'users/:id/new_message' ,to: 'messages#new_message', as: 'new_message'
+  resources :messages, only:[:create, :index]
 
 end
