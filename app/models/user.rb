@@ -15,6 +15,7 @@ class User < ApplicationRecord
          has_many :messages,dependent: :destroy 
          scope :except_user, ->(current_user) { where.not(id: current_user) }
          has_many :chatrooms
+         has_many :notifications, as: :recipient
          def self.from_omniauth(auth)
            user = User.where(email: auth.info.email).first
 
@@ -61,6 +62,10 @@ class User < ApplicationRecord
 
         def get_account_id
           payment_setting.stripe_user_id rescue nil
+        end
+
+        def unread_messages
+          chatrooms.map(&:messages).flatten.compact.map(&:status).count(false) rescue 0
         end
 
       end

@@ -23,6 +23,11 @@ class MessagesController < ApplicationController
     @chatrooms = Chatroom.where("(user_id =?) OR (sender_id=?)",current_user,current_user)
   end
 
+  def read_notification
+    @notifications = Notification.where(recipient_id: current_user.id,read: false)
+    @notifications.update_all(read: true)    
+  end  
+
   private
 
   def mark_all_read(user)

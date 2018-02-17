@@ -2,7 +2,8 @@
   <div class="panel-body message-box">
     <div class="pull-right"><%= message.timestamp %></div>
     <div class="">
-      <img src="/assets/dummy.jpg" class="img-circle" alt="Cinque Terre">
+      <%= image_tag avatar_url(message.try(:sender)), class: "img-circle avatar-small" %>
+      <!-- <img src="/assets/dummy.jpg" class="img-circle" alt="Cinque Terre"> -->
       <%= message.try(:sender).try(:fullname) %>
     </div><br>
     <%= message.try(:body) %></span>

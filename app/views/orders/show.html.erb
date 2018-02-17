@@ -125,6 +125,7 @@
     <% if cart_obj.is_reviewed? %>
       $('#stars_<%= cart_obj.id %>').raty({
         path: '/assets',
+        readOnly: true,
         scoreName: 'chef_review[star]',
         score: <%= cart_obj.get_reviews %>
       });

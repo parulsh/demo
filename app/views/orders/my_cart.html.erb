@@ -42,7 +42,11 @@
                   </td>
                   <td class="text-right">$<%= number_with_precision(product[:price], :precision => 2) %> </td>
                   <td class="text-center"><a href="#" onclick="onRemoveProduct('<%= product[:name]%>')"><i class="glyphicon glyphicon-remove"></i></td>
-                  <td><%= link_to "Chat", new_message_path(product.user_id) %></td>
+                  <td>
+                    <div class="text-babu icon-babu">
+                      <%= link_to "<i class='fa fa-comments fa-2x'></i>".html_safe, new_message_path(product.user_id) %>
+                    </div>
+                  </td>
                 </tr>
                 </tbody>
                 <%end%>
@@ -103,7 +107,11 @@
                   <td class="text-right">$<%= number_with_precision(cart_obj.fetch("price"), :precision => 2) %>
                 </td>
                   <td class="text-right"><a href="#" onclick="onRemoveProduct('<%= cart_obj.fetch("name") %>')"><i class="glyphicon glyphicon-remove"></i></td>
-                <td><%= link_to "Chat".html_safe, new_message_path(foodObj.user_id), class: "btn btn-form pull-right" %></td>
+                <td>
+                  <div class="text-babu icon-babu">
+                    <%= link_to "<i class='fa fa-comments fa-2x'></i>".html_safe, new_message_path(foodObj.user_id) %>
+                  </div>
+                </td>
                 </tr>
                 </tbody>
                 <%end%>

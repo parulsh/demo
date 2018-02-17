@@ -41,10 +41,13 @@
 
 <script>
   <% @order_foods.each_with_index do |of,i| %>
-    $('#stars_<%= of.id %>').raty({
-      path: '/assets',
-      scoreName: 'chef_review[star]',
-      score: <%= of.get_chef_reviewed %>
-    });
+    <% if of.chef_reviewed? %>
+      $('#stars_<%= of.id %>').raty({
+        path: '/assets',
+        readOnly: true,
+        scoreName: 'chef_review[star]',
+        score: <%= of.get_chef_reviewed %>
+      });
+    <% end %>
   <% end %>
 </script>

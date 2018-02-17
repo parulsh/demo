@@ -5,10 +5,18 @@
           <%= image_tag food.cover_photo(:medium) %>
         </div>
         <div class="panel-body">
-          <%= link_to food.listing_name, food %><br/>
-          $<%= food.price %> - <%= food.cuisine_type %> - <%= pluralize(food.portions_available, "Portion") %>
-          <div id="star_<%= food.id %>"></div> <%= pluralize(food.foodie_reviews.count, "review") %>
-
+          <div class="col-md-10">
+            <%= link_to food.listing_name, food %><br/>
+            $<%= food.price %> - <%= food.cuisine_type %> - <%= pluralize(food.portions_available, "Portion") %>
+            <div id="star_<%= food.id %>"></div> <%= pluralize(food.foodie_reviews.count, "review") %>
+          </div>
+          <% unless (current_user && (food.id == current_user.id)) %>
+            <div class="col-md-2">
+              <div align="right" class="text-babu icon-babu">
+                <%= link_to "<i class='fa fa-comments fa-2x'></i>".html_safe, new_message_path(food.user_id) %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

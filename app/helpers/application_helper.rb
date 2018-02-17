@@ -61,5 +61,8 @@ module ApplicationHelper
               opts
   end
 
+  def get_notification_count(current_user) 
+    Notification.where(recipient_id: current_user.id, read: false).count
+  end  
 
 end
