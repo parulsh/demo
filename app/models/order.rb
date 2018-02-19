@@ -12,9 +12,9 @@ class Order < ApplicationRecord
       if phone_number.present?
         @client = Twilio::REST::Client.new
         @client.messages.create(
-          from: '+15207624206',
+          from: '+15202146012',
           to: phone_number,
-          body: "Your Order has been successfully created"
+          body: "Thank you for ordering with Panza! Your ordered is being processed and it will be ready shortly."
         )
       end
     rescue 
