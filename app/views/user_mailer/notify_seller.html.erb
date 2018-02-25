@@ -1,0 +1,5 @@
+<p>Hi <%= @user.email %>!</p>
+
+<p>An Order has been placed for you listing <%= @order.get_food_names(@user.id) %> by <%= @order.user.fullname rescue nil %></p>
+
+<p>Thanks</p>

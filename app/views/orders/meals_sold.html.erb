@@ -3,7 +3,7 @@
   <div class="col-md-9">
     <div class="panel panel-default">
       <div class="panel-heading">
-        Your Orders
+        Meals Sold
       </div>
       <div class="panel-body">
         <table class="table">
@@ -15,13 +15,14 @@
             <td>Status</td>
             <td>Food</td>
             <td>Reviews</td>
+            <td>
           </tr>
           <% @order_foods.each_with_index do |of,i| %>
             <tr>
               <td><%= i+1 %></td>
               <td>$<%= of.price %></td>
               <td>$<%= (of.price.to_f*0.85).round(2) rescue nil %></td>
-              <td><%= of.created_at.strftime("%d/%m/%Y") %></td>
+              <td><%= of.created_at.strftime("%m/%d/%Y") %></td>
               <td><%= of.order.status %></td>
               <td><%= link_to "Food", food_path(of.food_id), class: "btn btn-form" %></td>
               <td>
@@ -30,6 +31,13 @@
                 <% else %>
                   <%= render partial: "reviews/chef_form", locals: {order_food: of} %>
                 <% end%>
+              </td>
+              <td>
+                <% if of.order.user %>
+                  <a href="<%= user_path(of.order.user) %>">
+                    <%= image_tag avatar_url(of.order.user), class: "img-circle avatar-small" %>
+                  </a>
+                <% end rescue nil %>
               </td>
             </tr>
           <% end %>

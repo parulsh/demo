@@ -3,6 +3,8 @@
     <li class="sidebar-item"><%= link_to "Your Listings", foods_path, class: "sidebar-link #{'active' if action == 'index'}" %></li>
     <li class="sidebar-item"><%= link_to "Your Orders", your_orders_path, class: "sidebar-link #{'active' if action == 'your_orders'}" %></li>
     <li class="sidebar-item"><%= link_to "Your Meals", your_meals_path, class: "sidebar-link #{'active' if action == 'your_meals'}" %></li>
-    <li class="sidebar-item"><%= link_to "Meals Sold", meals_sold_path, class: "sidebar-link #{'active' if action == 'meals_sold'}" %></li>
+    <% if current_user.stripe_connected? %>
+      <li class="sidebar-item"><%= link_to "Meals Sold", meals_sold_path, class: "sidebar-link #{'active' if action == 'meals_sold'}" %></li>
+    <% end %>
   </ul>
 </div>

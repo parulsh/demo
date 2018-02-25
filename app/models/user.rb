@@ -46,7 +46,7 @@ class User < ApplicationRecord
         def send_pin
           @client = Twilio::REST::Client.new
           @client.messages.create(
-            from: '+15207624206',
+            from: '+15202146012',
             to: self.phone_number,
             body: "Your pin is #{self.pin}"
           )
@@ -64,8 +64,8 @@ class User < ApplicationRecord
           payment_setting.stripe_user_id rescue nil
         end
 
-        def unread_messages
-          chatrooms.map(&:messages).flatten.compact.map(&:status).count(false) rescue 0
-        end
+          def count_unread_messages
+            messages.where(status: false).count rescue 0
+          end
 
       end
