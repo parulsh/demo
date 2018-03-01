@@ -130,7 +130,8 @@ def process_payment
           order_item =  OrderFood.new(order_id: order.id, food_id: obj.fetch("food_id"), quantity_per_day: obj.fetch("per_day_qty"), price: total_price, 
                                 start_date:  obj.fetch("start_date").to_date , end_date: obj.fetch("end_date").to_date )
           order_item.save!
-        end 
+        end
+        order.send_notification_to_sellers
         session[:cart_obj] = nil
         session[:card_params] = nil
         redirect_to '/payment-thanks'

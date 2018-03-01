@@ -3,7 +3,7 @@ class Order < ApplicationRecord
 
   belongs_to :user 
   has_many :order_foods
-  after_create :send_notification_to_buyer, :send_notification_to_sellers
+  after_create :send_notification_to_buyer
 
   def send_notification_to_buyer
     begin
