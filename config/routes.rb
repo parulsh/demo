@@ -53,8 +53,11 @@ Rails.application.routes.draw do
 
   get '/remove_product_from_session' => 'orders#remove_product_from_session'
 
+
   get '/my_cart' => 'orders#my_cart'
   get 'search' => 'pages#search'
+  
+  get '/home2' => 'pages#home_2'
 
 
   #------ Second level tutorial -----

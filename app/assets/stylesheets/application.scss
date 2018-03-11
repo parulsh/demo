@@ -4,7 +4,8 @@
 @import "toastr";
 @import "fullcalendar";
 @import "datepicker";
-
+@import "bootstrap.min.css";
+@import "style";
 
 body {
   color: #565a5c;
@@ -17,7 +18,7 @@ a {
 }
 
 .container {
-  width: 80%;
+  #width: 80%;
 }
 
 .text-babu, .icon-babu {

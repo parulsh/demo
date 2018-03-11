@@ -28,4 +28,9 @@ class PagesController < ApplicationController
 
     @arrFoods = @foods.to_a
   end
+
+
+  def home_2
+     render layout: 'home'
+  end  
 end

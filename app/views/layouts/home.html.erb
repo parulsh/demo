@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Panza</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCU5Eypr-mIt9pW1nieA8g0yX8lBSpKAvc&libraries=places"></script>
+    
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/hot-sneaks/jquery-ui.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+    <%= tag :meta, name: "stripe-publishable-key", content: Rails.application.secrets.stripe_publishable_key %>
+
+  </head>
+    <body>
+      <div class="nav_sec">
+        <div class="inner_nav">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                <div class="log_img"> <a href="#"><img class="" alt="logo" src="/assets/logo.gif" /></a> </div>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+                <div class="login_sec"> <span class="log_btn"><a href="#">LOG IN</a></span> <span class="sign_btn"><a href="#">SIGN UP</a></span> <span class="menu_btn"><a href="#"><i class="fas fa-bars"></i></a></span> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section class="banner_sec">
+        <div class="banner_sec_inn">
+          <div class="container">
+            <p class="pan_name_img"><img src="/assets/panza_banner.png" alt="bann_img"></p>
+            <div class="baner_txt">
+              <h4>Delicious meals</h4>
+              <h1>From Kitchens in Your Community</h1>
+            </div>
+            <div class="btn_banner">
+              <p class="free_acc"><a class="btn_acc">Create a free Account</a></p>
+              <p class="btn_facc"><a class="facc_btn"><span class="face_icon"><i class="fab fa-facebook-f"></i></span> Connecting with facebook</a></p>
+            </div>
+            <div class="cook_shar"> <img src="/assets/cook.png" alt="cook"> </div>
+          </div>
+        </div>
+      </section>
+      <section class="how_sec">
+        <div class="how_inn_sec">
+          <div class="container">
+            <div class="title_how">
+              <h2>HOW IT WORKS</h2>
+            </div>
+            <div class="how_main_box">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="how_box"> <img src="/assets/circul.png" alt="cir">
+                    <p class="border_bot"></p>
+                    <h3>ORDER ONLINE</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisc 
+                      Pellentesque vel enim a elit viverra elementuma.
+                      Aliquam erat volutpat. </p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="how_box"> <img src="/assets/circul.png" alt="cir">
+                    <p class="border_bot"></p>
+                    <h3>PICK UP</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisc 
+                      Pellentesque vel enim a elit viverra elementuma.
+                      Aliquam erat volutpat. </p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="how_box"> <img src="/assets/circul.png" alt="cir">
+                    <p class="border_bot"></p>
+                    <h3>EAT</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisc 
+                      Pellentesque vel enim a elit viverra elementuma.
+                      Aliquam erat volutpat. </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="mob_sec">
+        <div class="inn_mob_sec">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mob_img"> <img src="/assets/mob.png" alt="mob" id="img-mob-res"> </div>
+              </div>
+              <div class="col-md-6">
+                <div class="title_how">
+                  <h3>INTRODUCING THE PANZA APP</h3>
+                  <p class="border_bot"></p>
+                </div>
+                <div class="inn_mb_txt">
+                  <p>Morbi eget posuere dolor. Pellentesque cursus aliquet aliquet. Aeneanet 
+                    felis sit amet diam mollis ullamcorper. Nullam consequat sem a ante vest
+                    ibulum tristique. Suspendisse tristique lacus ac mattis porta. </p>
+                  <p>Vivamus ligula quam, vehicula non lacinia sed, faucibus sit amet libero. In 
+                    libero dui, eleifend eu nisi id, egestas fringilla odio. In varius quam a mas
+                    sa hendrerit ullamcorper a eu justo. Suspendisse porta mattis convallis. 
+                    Aenean tempus ligula ac odio rhoncus, quis aliquam dolor accumsan. </p>
+                  <p>Suspendisse aliquet felis consectetur libero congue, sed pulvinar diam 
+                    malesuada. Duis vehicula a nibh id hendrerit. Donec sit amet ultrices 
+                    ante, a mattis massa. </p>
+                </div>
+                <div class="btn_app"> <span class="app_bt"><a href="#"><img src="/assets/app.png" alt="app"></a></span> <span class="gool_bt"><a href="#"><img src="/assets/goo.png" alt="gool"></a></span> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="carousel">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+              <div class="carousel slide" id="fade-quote-carousel" data-ride="carousel" data-interval="3000"> 
+                <!-- Carousel indicators -->
+                <ol class="carousel-indicators">
+                  <li data-target="#fade-quote-carousel" data-slide-to="0" class="active"></li>
+                  <li data-target="#fade-quote-carousel" data-slide-to="1"></li>
+                  <li data-target="#fade-quote-carousel" data-slide-to="2" ></li>
+                </ol>
+                <!-- Carousel items -->
+                <div class="carousel-inner">
+                  <div class="active item">
+                    <div class="profile-circle" ><img src="/assets/test.png" alt="cur"></div>
+                    <blockquote>
+                      <p>“The meal I got from Jon was amazing! i’ll be <br>
+                        eating more of his meals for sure.”</p>
+                      <h5>- Michael Dawson, Tucson, AZ -</h5>
+                    </blockquote>
+                  </div>
+                  <div class="item">
+                    <div class="profile-circle" ><img src="/assets/test.png" alt="cur"></div>
+                    <blockquote>
+                      <p>“The meal I got from Jon was amazing! i’ll be <br>
+                        eating more of his meals for sure.”</p>
+                      <h5>- Michael Dawson, Tucson, AZ -</h5>
+                    </blockquote>
+                  </div>
+                  <div class="item">
+                    <div class="profile-circle" ><img src="/assets/test.png" alt="cur"></div>
+                    <blockquote>
+                      <p>“The meal I got from Jon was amazing! i’ll be <br>
+                        eating more of his meals for sure.”</p>
+                      <h5>- Michael Dawson, Tucson, AZ -</h5>
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="blog_sec">
+        <div class="inn_blog">
+          <div class="container-fluid">
+            <div class="title_blog">
+              <h3>Meals Near You</h3>
+            </div>
+            <div class="Blog_slider"> 
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="bolg_box">
+                            <img src="/assets/slid_1.png">
+                              <h6>SURF LESSON - BALI</h6>
+                              <h3>The Surf Champion</h3>
+                              <p><span class="doll">$9 per person</span></p>
+                              <p><span class="star_ite"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> 19</span></p>
+                              
+                          </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="bolg_box">
+                            <img src="/assets/slid_2.png">
+                              <h6>SURF LESSON - BALI</h6>
+                              <h3>The Surf Champion</h3>
+                              <p><span class="doll">$9 per person</span></p>
+                              <p><span class="star_ite"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> 19</span></p>
+                              
+                          </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="bolg_box">
+                            <img src="/assets/slid_1.png">
+                              <h6>SURF LESSON - BALI</h6>
+                              <h3>The Surf Champion</h3>
+                              <p><span class="doll">$9 per person</span></p>
+                              <p><span class="star_ite"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> 19</span></p>
+                              
+                          </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="bolg_box">
+                            <img src="/assets/slid_2.png">
+                              <h6>SURF LESSON - BALI</h6>
+                              <h3>The Surf Champion</h3>
+                              <p><span class="doll">$9 per person</span></p>
+                              <p><span class="star_ite"><i class="fas fa-star"></i> <i class="fas fa-star"></i> <i class="fas fa-star"></i> 19</span></p>
+                              
+                          </div>
+                      </div>
+                  </div>
+            </div>  
+          </div>
+        </div>
+      </section>
+      <div class="footer_sec">
+
+      </div>
+
+      <script>
+        $(".owl-carousel").owlCarousel({
+         
+            //Basic Speeds
+            slideSpeed : 200,
+            paginationSpeed : 800,
+         
+            //Autoplay
+            autoPlay : false,
+            goToFirst : true,
+            goToFirstSpeed : 1000,
+         
+            // Navigation
+            navigation : false,
+            navigationText : ["prev","next"],
+            pagination : true,
+            paginationNumbers: true,
+         
+            // Responsive 
+            responsive: true,
+            items : 5,
+            itemsDesktop : [1199,4],
+            itemsDesktopSmall : [980,3],
+            itemsTablet: [768,2],
+            itemsMobile : [479,1]
+         
+        })
+    </script>
+    </body>
+</html>
