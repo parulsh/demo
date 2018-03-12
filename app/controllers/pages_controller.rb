@@ -31,6 +31,7 @@ class PagesController < ApplicationController
 
 
   def home_2
-     render layout: 'home'
+    @foods = Food.where(active: true).limit(4)
+    render layout: 'home'
   end  
 end
